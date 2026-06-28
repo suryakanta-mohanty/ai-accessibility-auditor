@@ -1,12 +1,7 @@
+import AppRoutes from "./Routes/AppRoutes";
 
-function App() {
-
-  return (
-    <div>
-      <h1>AI Accessibility Auditor</h1>
-      <p>Our Project has officialy started! 🚀</p>
-    </div>
-  );
+function App(){
+  return <AppRoutes />;
 }
 
-export default App
+export default App;
