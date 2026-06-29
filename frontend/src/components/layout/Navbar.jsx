@@ -1,3 +1,5 @@
+import Button from "../../components/UI/Button";
+
 function Navbar(){
   return(
     <nav className="w-full border-b border-gray-200 bg-white">
@@ -19,9 +21,12 @@ function Navbar(){
             GitHub
           </a>
 
-          <a href="#" className="text-gray-600 hover:text-blue-600">
+          <Button 
+            variant="primary"
+            className="w-full"
+          >
             Login
-          </a>
+          </Button>
         </div>
       </div>
     </nav>

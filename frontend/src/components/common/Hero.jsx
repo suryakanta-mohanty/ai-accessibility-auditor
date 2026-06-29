@@ -1,3 +1,5 @@
+import Button from "../../components/UI/Button";
+
 function Hero(){
   return(
     <section className="mx-auto flex min-h-[80vh] max-w-7xl flex-col items-center justify-center px-6 text-center">
@@ -17,13 +19,13 @@ function Hero(){
       </p>
 
       <div className="flex gap-4">
-        <button className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:big-blue-700">
+        <Button variant="primary">
           Start Scanning
-        </button>
+        </Button>
 
-        <button className="rounded-lg border border-gray-300 px-6 py-3 font-semibold hover:big-blue-700">
+        <Button variant="secondary">
           View GitHub
-        </button>
+        </Button>
       </div>
       
     </section>
