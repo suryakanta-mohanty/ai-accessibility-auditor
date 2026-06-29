@@ -23,7 +23,6 @@ function Navbar(){
 
           <Button 
             variant="primary"
-            className="w-full"
           >
             Login
           </Button>

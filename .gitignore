@@ -5,16 +5,20 @@
 .vscode/
 
 # Node
-node_modules/
+frontend/node_modules/
 
 # React
-dist/
+frontend/dist/
 
 # Spring Boot
 target/
 
 # Environment
-.env
+frontend/.env
+frontend/.env.local
+
+# logs
+*.logs
 
 # OS
 .DS_Store

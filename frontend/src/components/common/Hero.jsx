@@ -18,7 +18,7 @@ function Hero(){
         Scan website, detect accessibility issues, and receive intelligent AI-powered recomendation in second.
       </p>
 
-      <div className="flex gap-4">
+      <div className="flex gap-6">
         <Button variant="primary">
           Start Scanning
         </Button>
