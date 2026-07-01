@@ -2,6 +2,9 @@ import Navbar from "../../components/layout/Navbar";
 import Hero from "../../components/common/Hero";
 import Features from "../../components/common/Features";
 import Stats from "../../components/sections/Stats";
+import ScanPreview from "../../components/common/ScanPreview";
+import HowItWorks from "../../components/common/HowItWorks";
+import ReportPreview from "../../components/common/ReportPreview";
 
 function Home(){
   return (
@@ -10,6 +13,9 @@ function Home(){
       <Hero />
       <Stats />
       <Features />
+      <ScanPreview />
+      <HowItWorks />
+      <ReportPreview />
     </>
   );
 }
