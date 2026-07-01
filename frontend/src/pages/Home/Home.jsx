@@ -5,17 +5,20 @@ import Stats from "../../components/sections/Stats";
 import ScanPreview from "../../components/common/ScanPreview";
 import HowItWorks from "../../components/common/HowItWorks";
 import ReportPreview from "../../components/common/ReportPreview";
+import Testimonials from "../../components/common/Testimonials";
+
 
 function Home(){
   return (
     <>
       <Navbar />
       <Hero />
-      <Stats />
-      <Features />
       <ScanPreview />
       <HowItWorks />
       <ReportPreview />
+      <Testimonials />
+      <Stats />
+      <Features />
     </>
   );
 }

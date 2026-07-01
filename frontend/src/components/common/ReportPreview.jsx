@@ -98,6 +98,7 @@ function ReportPreview(){
             iconBgColor="bg-red-100"
           />
 
+          {/* Al Recommendation */}
           <ReportItem
             icon={<Sparkles size={20} />}
             title="AI Recommendation"
@@ -108,11 +109,7 @@ function ReportPreview(){
 
         </div>
 
-        {/* Al Recommendation */}
-
       </div>
-
-      {/* Report Card */}
 
     </section>
   );
