@@ -41,7 +41,7 @@ function TestimonialCard({
 
           <p className="text-sm text-gray-500">
             {role}
-            <span className="mx-1 font-bold">&middot;</span>
+            <span className="mx-2 font-extrabold">&middot;</span>
             {company}
           </p>
 

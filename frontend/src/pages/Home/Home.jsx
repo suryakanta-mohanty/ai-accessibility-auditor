@@ -6,7 +6,7 @@ import ScanPreview from "../../components/common/ScanPreview";
 import HowItWorks from "../../components/common/HowItWorks";
 import ReportPreview from "../../components/common/ReportPreview";
 import Testimonials from "../../components/common/Testimonials";
-
+import CTA from "../../components/sections/CTA";
 
 function Home(){
   return (
@@ -19,6 +19,7 @@ function Home(){
       <Testimonials />
       <Stats />
       <Features />
+      <CTA />
     </>
   );
 }
