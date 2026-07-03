@@ -12,7 +12,7 @@ import {
 function Footer(){
   return(
 
-    <footer className="border-t border-gray-200 bg-gray-50">
+    <footer id="contact" className="border-t border-gray-200 bg-gray-50">
       
       <div className="mx-auto max-w-7xl px-6 pt-16 pb-5">
 
@@ -38,21 +38,25 @@ function Footer(){
 
             </div>
 
-            <p className="mt-6 max-w-md leading-7 text-gray-600">
+            <p className="mt-6 max-w-sm text-base leading-8 text-gray-600 sm:max-w-md">
               Build more inclusive digital experiences with our AI-powered accessibility scanner. Detect issues, receive actionable recommendations, and improve compliance with confidence.
             </p>
 
             {/* Social Icon */}
             <div className="mt-10 flex items-center gap-4">
               <a 
-                href="#"
+                href="https://github.com/suryakanta-mohanty/ai-accessibility-auditor"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 text-gray-600 transition-all duration-300 hover:-translate-y-1 hover:border-blue-600 hover:bg-blue-600 hover:text-white"
               >
                 <FaGithub size={20} />
               </a>
 
               <a 
-                href="#"
+                href="https://www.linkedin.com/in/suryakanta-mohanty/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 text-gray-600 transition-all duration-300 hover:-translate-y-1 hover:border-blue-600 hover:bg-blue-600 hover:text-white"
               >
                 <FaLinkedin size={20} />
@@ -71,7 +75,7 @@ function Footer(){
             <ul className="mt-5 space-y-3">
               <li>
                 <a 
-                  href="#"
+                  href="#home"
                   className="text-gray-600 transition-colors duration-300 hover:text-blue-600"
                 >
                   Home
@@ -80,7 +84,7 @@ function Footer(){
 
               <li>
                 <a 
-                  href="#"
+                  href="#features"
                   className="text-gray-600 transition-colors duration-300 hover:text-blue-600"
                 >
                   Features
@@ -89,7 +93,7 @@ function Footer(){
 
               <li>
                 <a 
-                  href="#"
+                  href="#faq"
                   className="text-gray-600 transition-colors duration-300 hover:text-blue-600"
                 >
                   FAQs
@@ -107,18 +111,18 @@ function Footer(){
             </h4>
 
             <ul className="mt-5 space-y-4">
-              <li className="flex items-center gap-3">
+              <li className="flex items-start gap-3">
 
                 <Mail 
                   size={18} 
-                  className="text-blue-600"
+                  className="mt-1 shrink-0 text-blue-600"
                 />
 
                 <a 
-                  href="#"
+                  href="mailto:suryakantamohanty855@gmail.com"
                   className="text-gray-600 transition-colors duration-300 hover:text-blue-600"
                 >
-                  hello@gmail.com
+                  suryakantamohanty855@gmail.com
                 </a>
 
               </li>
@@ -155,7 +159,7 @@ function Footer(){
 
       <button 
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-16 right-8 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-blue-700"
+        className="fixed bottom-16 right-8 flex h-12 w-12 cursor-pointer z-100 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-blue-700"
       >
         <ArrowUp size={20} />
       </button>

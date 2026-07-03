@@ -32,7 +32,7 @@ function FQA(){
   ];
 
   return(
-    <section className="mx-auto max-w-7xl px-6 py-28">
+    <section id="faq" className="mx-auto max-w-7xl px-6 py-28">
       
       {/* Heading Bolck */}
       <div className="mb-16 text-center">
@@ -45,7 +45,7 @@ function FQA(){
           Everything You Need to Know
         </h2>
 
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
+        <p className="mx-auto mt-4 max-w-md text-base leading-7 text-gray-600 sm:max-w-2xl sm:text-lg">
           Find answers to the most common questions about our AI-Powered accessibility scanner.
         </p>
 

@@ -3,7 +3,7 @@ import TestimonialCard from "./TestimonialCard";
 function Testimonials(){
   return(
     
-    <section className="mx-auto max-w-7xl px-6 py-28">
+    <section id="testimonials" className="mx-auto max-w-7xl px-6 py-28">
 
       {/* Heading */}
       <div className="mb-16 text-center">
@@ -19,7 +19,7 @@ function Testimonials(){
           </span>
         </h2>
 
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600 max-w-md text-base leading-7 sm:max-w-2xl sm:text-lg">
           See how developers and teams use our AI Accessibility Auditor to build better and more inclusive website.
         </p>
 

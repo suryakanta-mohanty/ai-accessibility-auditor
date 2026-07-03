@@ -7,7 +7,7 @@ import {
 
 function Features(){
   return(
-    <section className="mx-auto max-w-7xl px-6 py-24">
+    <section id="features" className="mx-auto max-w-7xl px-6 py-24">
       
       <div className="mb-16 text-center">
         

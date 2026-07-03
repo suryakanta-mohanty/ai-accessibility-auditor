@@ -8,7 +8,7 @@ import {
 
 function Hero(){
   return(
-    <section className="relative overflow-hidden px-6 py-20 md:py-24">
+    <section id="home" className="relative overflow-hidden px-6 py-20 md:py-24">
       
       <div className="absolute left-1/2 top-24 h-[450px] w-[450px] -translate-x-1/2 rounded-full bg-blue-400/20 blur-3xl"></div>
 
@@ -20,7 +20,7 @@ function Hero(){
           AI-Powered Accessibility Platform
         </span>
 
-        <h1 className="mb-3 text-5xl font-extrabold">
+        <h1 className="mb-3 text-4xl sm:text-5xl lg:text-6xl font-extrabold">
           Build Accessible Website
           <br />
           <span className="text-blue-600">
@@ -28,19 +28,19 @@ function Hero(){
           </span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-gray-600">
+        <p className="mx-auto mt-6 max-w-md text-base leading-8 text-gray-600 sm:max-w-xl sm:text-lg">
           Automatically scan your website, detect accessibility issues,
           and receive AI-Powered recomendations to improve WCAG compliance in seconds.
         </p>
 
         {/* Buttons */}
 
-        <div className="flex gap-6 mt-8">
-          <Button variant="primary" className="transition-all cursor-pointer duration-300 hover:scale-105">
+        <div className="mt-14 flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:justify-center">
+          <Button variant="primary" className="w-full justify-center sm:w-auto transition-all cursor-pointer duration-300 hover:scale-105">
             Start Free Scanning
           </Button>
 
-          <Button variant="secondary" className="transition-all cursor-pointer duration-300 hover:scale-105">
+          <Button variant="secondary" className="w-full justify-center sm:w-auto transition-all cursor-pointer duration-300 hover:scale-105">
             View GitHub
           </Button>
         </div>

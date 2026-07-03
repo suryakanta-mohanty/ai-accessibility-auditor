@@ -8,7 +8,7 @@ import {
 
 function ReportPreview(){
   return(
-    <section className="mx-auto max-w-7xl px-6 py-28">
+    <section id="report-preview" className="mx-auto max-w-7xl px-6 py-28">
       
       <div className="mb-16 text-center">
         <span className="text-sm font-semibold uppercase tracking-wider text-blue-600">

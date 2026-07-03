@@ -2,7 +2,7 @@ import { ScanSearch, ArrowRight, ExternalLink } from "lucide-react";
 
 function CTA(){
   return(
-    <section className="mx-auto max-w-7xl px-6 py-28">
+    <section id="cta" className="mx-auto max-w-7xl px-6 py-28">
       
       {/* CTA Card */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 px-8 py-20 text-center shadow-2xl">
@@ -22,22 +22,32 @@ function CTA(){
             </span>
           </h2>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-blue-100">
+          <p className="mx-auto mt-6 max-w-md text-base leading-8 text-blue-100 sm:max-w-2xl sm:text-lg">
             Scan your website in seconds, discover accessibility issues, and receive AI-Powered recommendations before your users even notice them.
           </p>
 
           <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button className="group inline-flex items-center gap-2 cursor-pointer rounded-xl bg-white px-7 py-4 font-semibold text-blue-700 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+            <button 
+              onClick={() => 
+                document.getElementById("scan-preview")?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="group inline-flex items-center gap-2 cursor-pointer rounded-xl bg-white px-7 py-4 font-semibold text-blue-700 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+            >
               Start Free Scan
               <ArrowRight size={18} 
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
             </button>
 
-            <button className="group inline-flex items-center gap-2 cursor-pointer rounded-xl border border-white/30 bg-white/10 px-7 py-4 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20">
+            <a 
+              href="https://github.com/suryakanta-mohanty/ai-accessibility-auditor"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 cursor-pointer rounded-xl border border-white/30 bg-white/10 px-7 py-4 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20"
+            >
               <ExternalLink size={18} />
               View on GitHub
-            </button>
+            </a>
           </div>
         </div>
         

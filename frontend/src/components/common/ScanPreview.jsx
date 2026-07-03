@@ -3,7 +3,7 @@ import { Globe } from "lucide-react";
 function ScanPreview(){
   return(
 
-    <section className="px-6 py-20">
+    <section id="scan-preview" className="px-6 py-20">
       <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl">
 
         {/* Browser Bar */}
