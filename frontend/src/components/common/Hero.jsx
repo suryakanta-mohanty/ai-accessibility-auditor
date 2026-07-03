@@ -36,11 +36,11 @@ function Hero(){
         {/* Buttons */}
 
         <div className="flex gap-6 mt-8">
-          <Button variant="primary" className="transition-all duration-300 hover:scale-105">
+          <Button variant="primary" className="transition-all cursor-pointer duration-300 hover:scale-105">
             Start Free Scanning
           </Button>
 
-          <Button variant="secondary" className="transition-all duration-300 hover:scale-105">
+          <Button variant="secondary" className="transition-all cursor-pointer duration-300 hover:scale-105">
             View GitHub
           </Button>
         </div>

@@ -5,7 +5,7 @@ function Button({
   onClick,
   type = "button",
 }){
-  const baseClasses = "rounded-lg px-6 py-3 font-semibold transition duration-300";
+  const baseClasses = "rounded-lg cursor-pointer px-6 py-3 font-semibold transition duration-300";
 
   const variants = {
     primary: "bg-blue-600 text-white hover:bg-blue-700",

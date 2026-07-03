@@ -7,6 +7,8 @@ import HowItWorks from "../../components/common/HowItWorks";
 import ReportPreview from "../../components/common/ReportPreview";
 import Testimonials from "../../components/common/Testimonials";
 import CTA from "../../components/sections/CTA";
+import FAQ from "../../components/sections/FAQ";
+
 
 function Home(){
   return (
@@ -20,6 +22,7 @@ function Home(){
       <Stats />
       <Features />
       <CTA />
+      <FAQ />
     </>
   );
 }
