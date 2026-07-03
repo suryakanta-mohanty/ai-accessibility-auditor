@@ -8,6 +8,7 @@ import ReportPreview from "../../components/common/ReportPreview";
 import Testimonials from "../../components/common/Testimonials";
 import CTA from "../../components/sections/CTA";
 import FAQ from "../../components/sections/FAQ";
+import Footer from "../../components/sections/Footer";
 
 
 function Home(){
@@ -23,6 +24,7 @@ function Home(){
       <Features />
       <CTA />
       <FAQ />
+      <Footer />
     </>
   );
 }
