@@ -15,15 +15,19 @@ function Home(){
   return (
     <>
       <Navbar />
-      <Hero />
-      <ScanPreview />
-      <HowItWorks />
-      <ReportPreview />
-      <Testimonials />
-      <Stats />
-      <Features />
-      <CTA />
-      <FAQ />
+
+      <main>
+        <Hero />
+        <Stats />
+        <Features />
+        <HowItWorks />
+        <ScanPreview />
+        <ReportPreview />
+        <Testimonials />
+        <CTA />
+        <FAQ />
+      </main>
+
       <Footer />
     </>
   );
