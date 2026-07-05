@@ -8,7 +8,7 @@ import {
 function HowItWorks(){
   return(
 
-    <section id="how-it-work" className="mx-auto max-w-7xl px-6 py-28">
+    <section id="how-it-works" className="mx-auto max-w-7xl px-6 py-28">
 
       {/* Heading */}
       <div className="mb-16 text-center">
