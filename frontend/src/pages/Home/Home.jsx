@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { getHealthStatus } from "../../services/api";
+
 import Navbar from "../../components/layout/Navbar";
 import Hero from "../../components/common/Hero";
 import Features from "../../components/common/Features";
@@ -12,9 +15,26 @@ import Footer from "../../components/sections/Footer";
 
 
 function Home(){
+
+  const [backendStatus, setBackendStatus] = useState("Check backend...");
+
+  useEffect(() =>{
+    getHealthStatus()
+      .then((data) =>{
+        setBackendStatus(`${data.status} - ${data.message}`);
+      })
+      .catch(() =>{
+        setBackendStatus("Backend not connected!");
+      });
+  }, []);
+
   return (
     <>
       <Navbar />
+
+      <div className="bg-green-50 px-6 py-3 text-center text-sm font-medium text-green-700">
+        Backend Status: {backendStatus}
+      </div>
 
       <main>
         <Hero />
