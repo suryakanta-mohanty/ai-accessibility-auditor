@@ -9,3 +9,24 @@ export async function getHealthStatus(){
 
   return response.json();
 }
+
+export async function scanWebsite(url){
+
+  const response = await fetch(`${API_BASE_URL}/scan`,{
+    
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+
+    body: JSON.stringify({ url }),
+
+  });
+
+  if(!response.ok){
+    throw new Error("Failed to scan website!");
+  }
+
+  return response.json();
+
+}
