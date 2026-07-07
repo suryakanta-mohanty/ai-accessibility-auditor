@@ -1,0 +1,23 @@
+package com.suryakanta.backend.controller;
+
+import com.suryakanta.backend.dto.ScanRequest;
+import com.suryakanta.backend.dto.ScanResponse;
+import com.suryakanta.backend.service.ScanService;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/scan")
+public class ScanController {
+
+    private final ScanService scanService;
+
+    public ScanController(ScanService scanService){
+        this.scanService = scanService;
+    }
+
+    @PostMapping
+    public ScanResponse scanWebsite(@Valid @RequestBody ScanRequest request){
+        return scanService.scanWebsite(request);
+    }
+}
