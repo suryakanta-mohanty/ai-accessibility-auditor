@@ -7,8 +7,8 @@ public class ScanRequest {
 
     @NotBlank(message = "URL Required")
     @Pattern(
-            regexp = "^(https?://).+",
-            message = "URL must start with http:// or https://"
+            regexp = "^(https?://)([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(:[0-9]{1,5})?(/.*)?$",
+            message = "Please enter a valid website URL starting with http:// or https://"
     )
 
     private String url;
