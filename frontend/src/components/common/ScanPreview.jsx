@@ -4,7 +4,7 @@ import { scanWebsite } from "../../services/api";
 
 function ScanPreview(){
 
-  const [url, setUrl] = useState("https://demo.mywebsite.com");
+  const [url, setUrl] = useState("");
   const [scanResult, setScanResult] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState("");
@@ -27,9 +27,10 @@ function ScanPreview(){
     }
   }
 
-  const score = scanResult?.accessibilityScore ?? 95;
-  const totalIssues = scanResult?.totalIssues ?? 0;
-  const shouldShowReport = !error;
+  const score = scanResult?.accessibilityScore;
+  const totalIssues = scanResult?.totalIssues;
+  const shouldShowReport = scanResult && !error;
+  const shouldShowEmptyState = !scanResult && !error;
 
   return(
 
@@ -53,6 +54,11 @@ function ScanPreview(){
               type="url" 
               value={url}
               onChange={(event) => setUrl(event.target.value)}
+              onKeyDown={(event) => {
+                if(event.key === "Enter" && !isScanning){
+                  handleScan();
+                }
+              }}
               placeholder="https://example.com"
               className="w-full bg-transparent outline-none"            
             />
@@ -81,6 +87,18 @@ function ScanPreview(){
             <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
               {error}
             </p>
+          )}
+
+          {shouldShowEmptyState &&(
+            <div className="mt-8 rounded-2xl border border-dashed border-gray-300 bg-gray-50 py-12 px-6 text-center">
+              <h3 className="text-xl font-bold text-gray-900">
+                No Scan Report yet
+              </h3>
+
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-gray-600">
+                Enter a website URL and click Scan to generate an accessibility report.
+              </p>
+            </div>
           )}
 
           {shouldShowReport && (
