@@ -23,10 +23,12 @@ export async function scanWebsite(url){
 
   });
 
+  const data = await response.json();
+
   if(!response.ok){
-    throw new Error("Failed to scan website!");
+    throw new Error(data.message || "Failed to scan website!");
   }
 
-  return response.json();
+  return data;
 
 }

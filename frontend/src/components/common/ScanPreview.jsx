@@ -11,14 +11,16 @@ function ScanPreview(){
 
   async function handleScan(){
     setError("");
+    setScanResult(null);
     setIsScanning(true);
 
     try{
       const data = await scanWebsite(url);
       setScanResult(data);
 
-    } catch{
-      setError("Something went wrong. Please make sure backend is running");
+    } catch (error){
+      setScanResult(null);
+      setError(error.message);
 
     } finally{
       setIsScanning(false);
@@ -27,6 +29,7 @@ function ScanPreview(){
 
   const score = scanResult?.accessibilityScore ?? 95;
   const totalIssues = scanResult?.totalIssues ?? 0;
+  const shouldShowReport = !error;
 
   return(
 
@@ -80,99 +83,105 @@ function ScanPreview(){
             </p>
           )}
 
-          {/* Score Section */}
-          <div className="mt-8 grid gap-8 lg:grid-cols-2">
+          {shouldShowReport && (
 
-            <div>
+            <>
+              {/* Score Section */}
+              <div className="mt-8 grid gap-8 lg:grid-cols-2">
 
-              <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
-                Accessibility Score
-              </p>
+                <div>
 
-              <h3 className="mt-3 text-6xl font-bold text-gray-900">
-                {score}
-              </h3>
+                  <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
+                    Accessibility Score
+                  </p>
 
-              <p className="mt-2 text-green-600 font-semibold">
-                {score >= 90 ? "Excellent" : score >= 70 ? "Good" : "Needs Improvement"}
-              </p>
+                  <h3 className="mt-3 text-6xl font-bold text-gray-900">
+                    {score}
+                  </h3>
 
-            </div>
+                  <p className="mt-2 text-green-600 font-semibold">
+                    {score >= 90 ? "Excellent" : score >= 70 ? "Good" : "Needs Improvement"}
+                  </p>
 
-            {/* Right */}
-            <div>
+                </div>
 
-              <div className="mb-3 flex justify-between">
+                {/* Right */}
+                <div>
 
-                <span className="font-medium">
-                  Overall Score
-                </span>
+                  <div className="mb-3 flex justify-between">
 
-                <span>
-                  {score}%
-                </span>
+                    <span className="font-medium">
+                      Overall Score
+                    </span>
+
+                    <span>
+                      {score}%
+                    </span>
+
+                  </div>
+
+                  <div className="h-4 overflow-hidden rounded-full bg-gray-200">
+
+                    <div 
+                      className="h-full rounded-full bg-blue-600 transition-all duration-700"
+                      style={{ width: `${score}%` }}
+                    ></div>
+
+                  </div>
+
+                  <p className="mt-4 text-sm text-gray-600">
+                    Total Issues Found:{" "}
+                    <span className="font-semibold text-gray-900">
+                      {totalIssues}
+                    </span>
+                  </p>
+
+                </div>
 
               </div>
 
-              <div className="h-4 overflow-hidden rounded-full bg-gray-200">
+              {/* Dynamic result */}
+              {scanResult && (
+                <div className="mt-10 grid gap-8 lg:grid-cols-2">
+                  
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">
+                      Issues Found
+                    </h3>
 
-                <div 
-                  className="h-full rounded-full bg-blue-600 transition-all duration-700"
-                  style={{ width: `${score}%` }}
-                ></div>
+                    <ul className="mt-4 space-y-3">
+                      {scanResult.issues.map((issue, index) =>(
+                        <li
+                          key={index}
+                          className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700"
+                        >
+                          {issue}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-              </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">
+                      Recommendations
+                    </h3>
 
-              <p className="mt-4 text-sm text-gray-600">
-                Total Issues Found:{" "}
-                <span className="font-semibold text-gray-900">
-                  {totalIssues}
-                </span>
-              </p>
+                    <ul className="mt-4 space-y-3">
+                      {scanResult.recommendations.map((recommendation, index) =>(
+                        <li 
+                          key={index}
+                          className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 text-sm text-green-700"
+                        >
+                          {recommendation}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-            </div>
+                </div>
+              )}
+            </>
 
-          </div>
-
-          {/* Dynamic result */}
-          {scanResult && (
-            <div className="mt-10 grid gap-8 lg:grid-cols-2">
-              
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">
-                  Issues Found
-                </h3>
-
-                <ul className="mt-4 space-y-3">
-                  {scanResult.issues.map((issue, index) =>(
-                    <li
-                      key={index}
-                      className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700"
-                    >
-                      {issue}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">
-                  Recommendations
-                </h3>
-
-                <ul className="mt-4 space-y-3">
-                  {scanResult.recommendations.map((recommendation, index) =>(
-                    <li 
-                      key={index}
-                      className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 text-sm text-green-700"
-                    >
-                      {recommendation}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-            </div>
           )}
 
         </div>
