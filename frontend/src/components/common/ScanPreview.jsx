@@ -11,6 +11,13 @@ function ScanPreview(){
 
   async function handleScan(){
     setError("");
+
+    if(!url.trim()){
+      setScanResult(null);
+      setError("Please enter a website URL");
+      return;
+    }
+
     setScanResult(null);
     setIsScanning(true);
 
@@ -53,7 +60,10 @@ function ScanPreview(){
             <input 
               type="url" 
               value={url}
-              onChange={(event) => setUrl(event.target.value)}
+              onChange={(event) => {
+                setUrl(event.target.value)
+                setError("");
+              }}
               onKeyDown={(event) => {
                 if(event.key === "Enter" && !isScanning){
                   handleScan();
@@ -67,7 +77,7 @@ function ScanPreview(){
 
           <button 
             onClick={handleScan}
-            disabled={isScanning}
+            disabled={isScanning || !url.trim()}
             className="flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isScanning && <LoaderCircle size={16} className="animate-spin" />}
