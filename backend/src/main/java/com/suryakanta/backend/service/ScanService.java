@@ -2,7 +2,8 @@ package com.suryakanta.backend.service;
 
 import com.suryakanta.backend.dto.ScanRequest;
 import com.suryakanta.backend.dto.ScanResponse;
-
+import com.suryakanta.backend.entity.ScanResult;
+import com.suryakanta.backend.repository.ScanResultRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,12 @@ import java.util.List;
 
 @Service
 public class ScanService {
+
+    private final ScanResultRepository scanResultRepository;
+
+    public ScanService(ScanResultRepository scanResultRepository){
+        this.scanResultRepository = scanResultRepository;
+    }
 
     public ScanResponse scanWebsite(ScanRequest request){
         List<String> issues = List.of(
@@ -24,13 +31,26 @@ public class ScanService {
                 "Add aria-label or visible text to icon-only buttons"
         );
 
+        int score = 82;
+        int totalIssues = issues.size();
+        LocalDateTime scannedAt = LocalDateTime.now();
+
+        ScanResult scanResult = new ScanResult(
+                request.getUrl(),
+                score,
+                totalIssues,
+                scannedAt
+        );
+
+        scanResultRepository.save(scanResult);
+
         return new ScanResponse(
                 request.getUrl(),
-                82,
-                issues.size(),
+                score,
+                totalIssues,
                 issues,
                 recommendations,
-                LocalDateTime.now()
+                scannedAt
         );
     }
 }
