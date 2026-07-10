@@ -29,4 +29,9 @@ public class ScanController {
         return scanService.getAllScans();
     }
 
+    @GetMapping("/history/recent")
+    public List<ScanHistoryResponse> getRecentScanHistory() {
+        return scanService.getRecentScans();
+    }
+
 }

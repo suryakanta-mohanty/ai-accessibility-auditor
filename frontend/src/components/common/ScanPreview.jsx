@@ -249,7 +249,7 @@ function ScanPreview(){
               </h3>
 
               <div className="mt-4 space-y-3">
-                {scanHistory.slice(-5).reverse().map((scan) =>(
+                {scanHistory.map((scan) =>(
                   <div
                     key={scan.id}
                     className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"

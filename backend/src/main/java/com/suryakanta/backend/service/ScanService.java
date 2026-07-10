@@ -67,4 +67,17 @@ public class ScanService {
                 ))
                 .toList();
     }
+
+    public List<ScanHistoryResponse> getRecentScans() {
+        return scanResultRepository.findTop3ByOrderByScannedAtDesc()
+                .stream()
+                .map(scanResult -> new ScanHistoryResponse(
+                        scanResult.getId(),
+                        scanResult.getUrl(),
+                        scanResult.getAccessibilityScore(),
+                        scanResult.getTotalIssues(),
+                        scanResult.getScannedAt()
+                ))
+                .toList();
+    }
 }
