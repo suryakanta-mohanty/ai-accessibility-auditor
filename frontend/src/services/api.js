@@ -32,3 +32,15 @@ export async function scanWebsite(url){
   return data;
 
 }
+
+export async function getScanHistory(){
+
+  const response = await fetch(`${API_BASE_URL}/scan/history`);
+
+  if(!response.ok){
+    throw new Error("Failed to fetch scan history");
+  }
+
+  return response.json();
+
+}

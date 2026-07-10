@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Globe, LoaderCircle } from "lucide-react";
-import { scanWebsite } from "../../services/api";
+import { scanWebsite, getScanHistory } from "../../services/api";
 
 function ScanPreview(){
 
@@ -8,6 +8,34 @@ function ScanPreview(){
   const [scanResult, setScanResult] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState("");
+  const [scanHistory, setScanHistory] = useState([]);
+
+  
+
+  useEffect(() => {
+
+    async function loadScanHistory(){
+      try{
+        const data = await getScanHistory();
+        setScanHistory(data);
+
+      } catch{
+        setScanHistory([]);
+      }
+    }
+
+    loadScanHistory();
+  }, []);
+
+  async function refreshScanHistory(){
+    try{
+      const data = await getScanHistory();
+      setScanHistory(data);
+
+    } catch{
+      setScanHistory([]);
+    }
+  }
 
   async function handleScan(){
     setError("");
@@ -24,6 +52,7 @@ function ScanPreview(){
     try{
       const data = await scanWebsite(url);
       setScanResult(data);
+      refreshScanHistory();
 
     } catch (error){
       setScanResult(null);
@@ -209,6 +238,42 @@ function ScanPreview(){
                 </div>
               )}
             </>
+
+          )}
+
+          {scanHistory.length > 0 &&(
+
+            <div className="mt-10 border-t border-gray-200 pt-8">
+              <h3 className="text-lg font-bold text-gray-900">
+                Recent Scan
+              </h3>
+
+              <div className="mt-4 space-y-3">
+                {scanHistory.slice(-5).reverse().map((scan) =>(
+                  <div
+                    key={scan.id}
+                    className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+                  >
+
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        {scan.url}
+                      </p>
+
+                      <p className="mt-1 text-sm text-gray-500">
+                        Issues: {scan.totalIssues} <span>&bull;</span> Scanned:{" "}
+                        {new Date(scan.scannedAt).toLocaleString()}
+                      </p>
+                    </div>
+
+                    <span className="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700">
+                      Score {scan.accessibilityScore}
+                    </span>
+
+                  </div>
+                ))}
+              </div>
+            </div>
 
           )}
 

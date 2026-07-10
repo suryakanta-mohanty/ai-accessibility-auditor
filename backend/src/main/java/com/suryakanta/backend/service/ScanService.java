@@ -2,6 +2,7 @@ package com.suryakanta.backend.service;
 
 import com.suryakanta.backend.dto.ScanRequest;
 import com.suryakanta.backend.dto.ScanResponse;
+import com.suryakanta.backend.dto.ScanHistoryResponse;
 import com.suryakanta.backend.entity.ScanResult;
 import com.suryakanta.backend.repository.ScanResultRepository;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,18 @@ public class ScanService {
                 recommendations,
                 scannedAt
         );
+    }
+
+    public List<ScanHistoryResponse> getAllScans(){
+        return scanResultRepository.findAll()
+                .stream()
+                .map(scanResult -> new ScanHistoryResponse(
+                        scanResult.getId(),
+                        scanResult.getUrl(),
+                        scanResult.getAccessibilityScore(),
+                        scanResult.getTotalIssues(),
+                        scanResult.getScannedAt()
+                ))
+                .toList();
     }
 }
