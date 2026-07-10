@@ -14,26 +14,26 @@ import java.util.List;
 public class ScanService {
 
     private final ScanResultRepository scanResultRepository;
+    private final AccessibilityScanService accessibilityScanService;
 
-    public ScanService(ScanResultRepository scanResultRepository){
+    public ScanService(
+            ScanResultRepository scanResultRepository,
+            AccessibilityScanService accessibilityScanService
+    ){
         this.scanResultRepository = scanResultRepository;
+        this.accessibilityScanService = accessibilityScanService;
     }
 
     public ScanResponse scanWebsite(ScanRequest request){
-        List<String> issues = List.of(
-                "Missing alt text on images",
-                "Low color contrast detected",
-                "Button without accessible label"
-        );
 
-        List<String> recommendations = List.of(
-                "Add descriptive alt attributes to all meaningful images",
-                "Improve text and background color contrast to meet WCAG standards",
-                "Add aria-label or visible text to icon-only buttons"
-        );
+        List<String> issues = accessibilityScanService.findIssues(request.getUrl());
 
-        int score = 82;
+        List<String> recommendations = issues.stream()
+                .map(issue -> "Fix: " + issue)
+                .toList();
+
         int totalIssues = issues.size();
+        int score = Math.max(100 - (totalIssues * 10), 0);
         LocalDateTime scannedAt = LocalDateTime.now();
 
         ScanResult scanResult = new ScanResult(
