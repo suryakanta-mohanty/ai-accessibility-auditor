@@ -50,9 +50,16 @@ public class AccessibilityScanService {
 
     private void checkImagesAltText(Document document, List<String> issues) {
         for (Element image : document.select("img")) {
-            if(!image.hasAttr("alt")) {
-                issues.add("Image is missing alt text.");
-                return;
+            String alt = image.attr("alt").trim();
+
+            if (!image.hasAttr("alt") || alt.isEmpty()) {
+                String imageSource = image.attr("src");
+
+                if(imageSource.isBlank()) {
+                    imageSource = "Image source is not available";
+                }
+
+                issues.add("Image is missing alt text: " + imageSource);
             }
         }
     }
@@ -63,8 +70,13 @@ public class AccessibilityScanService {
             boolean hasAriaLabel = !button.attr("aria-label").trim().isEmpty();
 
             if (!hasVisibleText && !hasAriaLabel) {
-                issues.add("Button without accessible text found");
-                return;
+                String buttonHtml = button.outerHtml();
+
+                if(buttonHtml.length() > 100) {
+                    buttonHtml = buttonHtml.substring(0, 100) + "...";
+                }
+
+                issues.add("Button without accessible text found: " + buttonHtml);
             }
         }
     }
@@ -75,8 +87,13 @@ public class AccessibilityScanService {
             boolean hasAriaLabel = !link.attr("aria-label").trim().isEmpty();
 
             if (!hasVisibleText && !hasAriaLabel) {
-                issues.add("Link without readable text found");
-                return;
+                String href = link.attr("href");
+
+                if(href.isBlank()) {
+                    href = "Link href is not available";
+                }
+
+                issues.add("Link without readable text found: " + href);
             }
         }
     }
