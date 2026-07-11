@@ -198,16 +198,22 @@ function ScanPreview(){
               </div>
 
               {/* Dynamic result */}
-              {scanResult && (
+              {scanResult && scanResult.totalIssues === 0 && (
+                <div className="mt-10 rounded-xl border border-gray-100 bg-green-50 px-5 py-4 text-sm font-medium text-green-700">
+                  No accessibility issues found by the basic scanner.
+                </div>
+              )}
+
+              {scanResult && scanResult.totalIssues > 0 && (
                 <div className="mt-10 grid gap-8 lg:grid-cols-2">
-                  
+
                   <div>
                     <h3 className="text-lg font-bold text-gray-900">
                       Issues Found
                     </h3>
 
                     <ul className="mt-4 space-y-3">
-                      {scanResult.issues.map((issue, index) =>(
+                      {scanResult.issues.map((issue, index) => (
                         <li
                           key={index}
                           className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700"
@@ -224,8 +230,8 @@ function ScanPreview(){
                     </h3>
 
                     <ul className="mt-4 space-y-3">
-                      {scanResult.recommendations.map((recommendation, index) =>(
-                        <li 
+                      {scanResult.recommendations.map((recommendation, index) => (
+                        <li
                           key={index}
                           className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 text-sm text-green-700"
                         >
