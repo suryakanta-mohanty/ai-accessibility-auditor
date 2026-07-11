@@ -28,9 +28,7 @@ public class ScanService {
 
         List<String> issues = accessibilityScanService.findIssues(request.getUrl());
 
-        List<String> recommendations = issues.stream()
-                .map(issue -> "Fix: " + issue)
-                .toList();
+        List<String> recommendations = generateRecommendations(issues);
 
         int totalIssues = issues.size();
         int score = Math.max(100 - (totalIssues * 10), 0);
@@ -53,6 +51,34 @@ public class ScanService {
                 recommendations,
                 scannedAt
         );
+    }
+
+    private List<String> generateRecommendations(List<String> issues) {
+        return issues.stream()
+                .map(issue -> {
+                    if (issue.toLowerCase().contains("image")) {
+                       return "Add meaningful alt text to image so screen reader users can understand the visual content.";
+                    }
+
+                    if (issue.toLowerCase().contains("button")) {
+                        return "Add visible text or an aria-label to buttons so assistive technologies can describe their purpose.";
+                    }
+
+                    if (issue.toLowerCase().contains("link")) {
+                        return "Add readable link text or an aria-label so users understand where the link will take them.";
+                    }
+
+                    if (issue.toLowerCase().contains("title")) {
+                        return "Add a clear page title so users and screen readers can identify the page purpose.";
+                    }
+
+                    if (issue.toLowerCase().contains("lang")) {
+                        return "Add a lang attribute to the html tag so screen readers can use the correct pronunciation.";
+                    }
+
+                    return "Review this accessibility issue and update the HTML to follow WCAG accessibility best practices.";
+                })
+                .toList();
     }
 
     public List<ScanHistoryResponse> getAllScans(){
