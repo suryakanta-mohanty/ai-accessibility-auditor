@@ -1,5 +1,7 @@
 package com.suryakanta.backend.service;
 
+import com.suryakanta.backend.dto.AccessibilityIssue;
+import com.suryakanta.backend.dto.IssueType;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,8 +14,8 @@ import java.util.List;
 @Service
 public class AccessibilityScanService {
 
-    public List<String> findIssues(String url) {
-        List<String> issues = new ArrayList<>();
+    public List<AccessibilityIssue> findIssues(String url) {
+        List<AccessibilityIssue> issues = new ArrayList<>();
 
         try{
             Document document = Jsoup.connect(url)
@@ -28,27 +30,42 @@ public class AccessibilityScanService {
             checkLinksReadableText(document, issues);
 
         } catch (IOException exception) {
-            issues.add("unable to access the website, Please check if the URL is reachable");
+            issues.add(new AccessibilityIssue(
+                    IssueType.PAGE,
+                    "Unable to access the website",
+                    url,
+                    "Check if the URL is reachable, publicly accessible, and not blocking automated requests."
+            ));
         }
 
         return issues;
     }
 
-    private void checkPageTitle(Document document, List<String> issues) {
+    private void checkPageTitle(Document document, List<AccessibilityIssue> issues) {
         if (document.title() == null || document.title().trim().isEmpty()) {
-           issues.add("Page title is missing.");
+           issues.add(new AccessibilityIssue(
+                   IssueType.PAGE,
+                   "Page title is missing",
+                   "<title>",
+                   "Add a clear page title so users and screen readers can identify the page purpose."
+           ));
         }
     }
 
-    private void checkHtmlLang(Document document, List<String> issues) {
+    private void checkHtmlLang(Document document, List<AccessibilityIssue> issues) {
         Element html = document.selectFirst("html");
 
         if (html == null || html.attr("lang").trim().isEmpty()) {
-            issues.add("HTML Lang attribute is missing.");
+            issues.add(new AccessibilityIssue(
+                    IssueType.PAGE,
+                    "HTML lang attribute is missing",
+                    "<html>",
+                    "Add a lang attribute to the html tag so screen readers can use the correct pronunciation."
+            ));
         }
     }
 
-    private void checkImagesAltText(Document document, List<String> issues) {
+    private void checkImagesAltText(Document document, List<AccessibilityIssue> issues) {
         for (Element image : document.select("img")) {
             String alt = image.attr("alt").trim();
 
@@ -59,12 +76,17 @@ public class AccessibilityScanService {
                     imageSource = "Image source is not available";
                 }
 
-                issues.add("Image is missing alt text: " + imageSource);
+                issues.add(new AccessibilityIssue(
+                        IssueType.IMAGE,
+                        "Image is missing alt text",
+                        imageSource,
+                        "Add meaningful alt text to images so screen reader users can understand the visual content."
+                ));
             }
         }
     }
 
-    private void checkButtonsAccessibleText(Document document, List<String> issues) {
+    private void checkButtonsAccessibleText(Document document, List<AccessibilityIssue> issues) {
         for (Element button : document.select("button")) {
             boolean hasVisibleText = !button.text().trim().isEmpty();
             boolean hasAriaLabel = !button.attr("aria-label").trim().isEmpty();
@@ -76,12 +98,17 @@ public class AccessibilityScanService {
                     buttonHtml = buttonHtml.substring(0, 100) + "...";
                 }
 
-                issues.add("Button without accessible text found: " + buttonHtml);
+                issues.add(new AccessibilityIssue(
+                        IssueType.BUTTON,
+                        "Button without accessible text found",
+                        buttonHtml,
+                        "Add visible text or an aria-label to buttons so assistive technologies can describe their purpose."
+                ));
             }
         }
     }
 
-    private void checkLinksReadableText(Document document, List<String> issues) {
+    private void checkLinksReadableText(Document document, List<AccessibilityIssue> issues) {
         for (Element link : document.select("a[href]")) {
             boolean hasVisibleText = !link.text().trim().isEmpty();
             boolean hasAriaLabel = !link.attr("aria-label").trim().isEmpty();
@@ -93,7 +120,12 @@ public class AccessibilityScanService {
                     href = "Link href is not available";
                 }
 
-                issues.add("Link without readable text found: " + href);
+                issues.add(new AccessibilityIssue(
+                        IssueType.LINK,
+                        "Link without readable text found",
+                        href,
+                        "Add readable link text or an aria-label so users understand where the link will take them."
+                ));
             }
         }
     }

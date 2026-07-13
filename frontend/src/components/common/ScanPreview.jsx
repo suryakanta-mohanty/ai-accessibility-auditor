@@ -9,6 +9,7 @@ function ScanPreview(){
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState("");
   const [scanHistory, setScanHistory] = useState([]);
+  const [activeIssueTab, setActiveIssueTab] = useState("");
 
   
 
@@ -39,23 +40,45 @@ function ScanPreview(){
 
   async function handleScan(){
     setError("");
+    setActiveIssueTab("");
 
     if(!url.trim()){
       setScanResult(null);
+      setActiveIssueTab("");
       setError("Please enter a website URL");
       return;
     }
 
     setScanResult(null);
+    setActiveIssueTab("");
     setIsScanning(true);
 
     try{
       const data = await scanWebsite(url);
       setScanResult(data);
+
+      const issueGroups = data.issues.reduce((groups, issue) => {
+        if(!groups[issue.type]){
+          groups[issue.type] = [];
+        }
+
+        groups[issue.type].push(issue);
+        return groups;
+      }, {});
+
+      const defaultTab = Object.entries(issueGroups)
+        .map(([type, issues]) => ({
+          type,
+          count: issues.length,
+        }))
+        .sort((a, b) => b.count - a.count)[0]?.type || "";
+      
+      setActiveIssueTab(defaultTab);
       refreshScanHistory();
 
     } catch (error){
       setScanResult(null);
+      setActiveIssueTab("");
       setError(error.message);
 
     } finally{
@@ -67,6 +90,49 @@ function ScanPreview(){
   const totalIssues = scanResult?.totalIssues;
   const shouldShowReport = scanResult && !error;
   const shouldShowEmptyState = !scanResult && !error;
+
+  const issueTypeLabels = {
+    IMAGE: "Images",
+    BUTTON: "Buttons",
+    LINK: "Links",
+    PAGE: "Pages",
+  };
+
+  const groupedIssues = scanResult?.issues?.reduce((groups, issue) =>{
+    if(!groups[issue.type]){
+      groups[issue.type] = [];
+    }
+
+    groups[issue.type].push(issue);
+    return groups;
+  }, {}) || {};
+
+  const issueTabs = Object.entries(groupedIssues)
+    .map(([type, issues]) => ({
+      type,
+      label: issueTypeLabels[type] || type,
+      count: issues.length,
+    }))
+    .filter((tab) => tab.count > 0)
+    .sort((a, b) => b.count - a.count);
+
+  const allIssuesTab = scanResult?.totalIssues > 0
+    ?{
+      type: "ALL",
+      label: "All",
+      count: scanResult?.totalIssues,
+    }
+    : null;
+
+  const visibleIssueTabs = allIssuesTab
+    ? [...issueTabs, allIssuesTab]
+    : issueTabs;
+  
+  const selectedIssueType = activeIssueTab || issueTabs[0]?.type || "";
+
+  const visibleIssues = selectedIssueType === "ALL"
+    ? scanResult?.issues || []
+    : groupedIssues[selectedIssueType] || [];
 
   return(
 
@@ -205,42 +271,60 @@ function ScanPreview(){
               )}
 
               {scanResult && scanResult.totalIssues > 0 && (
-                <div className="mt-10 grid gap-8 lg:grid-cols-2">
-
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900">
-                      Issues Found
-                    </h3>
-
-                    <ul className="mt-4 space-y-3">
-                      {scanResult.issues.map((issue, index) => (
-                        <li
-                          key={index}
-                          className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700"
-                        >
-                          {issue}
-                        </li>
-                      ))}
-                    </ul>
+                <div className="mt-10">
+                  <div className="flex flex-wrap gap-3">
+                    {visibleIssueTabs.map((tab) =>(
+                      <button
+                        key={tab.type}
+                        onClick={() => setActiveIssueTab(tab.type)}
+                        className={`rounded-lg cursor-pointer px-4 py-2 text-sm font-semibold border border-gray-200 transition-all duration-300 ${
+                          selectedIssueType === tab.type
+                            ? "bg-blue-600 text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200 "
+                        }`}
+                      >
+                        {tab.label} {tab.count}
+                      </button>
+                    ))}
                   </div>
 
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900">
-                      Recommendations
-                    </h3>
+                  <div className="mt-6 space-y-4">
+                    {visibleIssues.map((issue, index) => (
+                      <div
+                        key={`${issue.type}-${index}`}
+                        className="rounded-2xl border border-gray-200 bg-gray-50 p-5"
+                      >
 
-                    <ul className="mt-4 space-y-3">
-                      {scanResult.recommendations.map((recommendation, index) => (
-                        <li
-                          key={index}
-                          className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 text-sm text-green-700"
-                        >
-                          {recommendation}
-                        </li>
-                      ))}
-                    </ul>
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                          <div>
+                            <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                              {issueTypeLabels[issue.type] || issue.type}
+                            </span>
+
+                            <h3 className="mt-3 text-base font-bold text-gray-900">
+                              {issue.message}
+                            </h3>
+
+                            <p className="mt-2 break-all rounded-lg bg-red-100 px-3 py-2 text-sm text-gray-600">
+                              Element: {issue.element}
+                            </p>
+
+                          </div>
+                        </div>
+
+                        <div className="mt-4 rounded-xl border border-green-100 bg-green-50 px-4 py-3">
+                          <p className="text-sm font-semibold text-green-700">
+                            Recommendation
+                          </p>
+
+                          <p className="mt-1 text-sm leading-6 text-green-700">
+                            {issue.recommendation}
+                          </p>
+                        </div>
+
+                      </div>
+                    ))}
                   </div>
-
                 </div>
               )}
             </>
