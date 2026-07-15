@@ -133,6 +133,10 @@ function ScanPreview(){
   const visibleIssues = selectedIssueType === "ALL"
     ? scanResult?.issues || []
     : groupedIssues[selectedIssueType] || [];
+  
+  const scoreStatus = score >= 90 ? "Excellent" : score >= 70 ? "Good" : "Needs Improvement";
+  const scoreStatusColor = score >= 90 ? "text-green-600" : score >= 70 ? "text-blue-600" : "text-red-600";
+  const scoreBarColor = score >= 90 ? "bg-green-600" : score >= 70 ? "bg-blue-600" : "bg-red-600";
 
   return(
 
@@ -140,7 +144,7 @@ function ScanPreview(){
       <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl">
 
         {/* Browser Bar */}
-        <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-5 py-5">
+        <div className="flex flex-col gap-5 border-b border-gray-200 bg-gray-50 px-5 py-5 lg:flex-row lg:items-center lg:justify-between">
 
           <div className="flex items-center gap-2">
 
@@ -150,8 +154,8 @@ function ScanPreview(){
 
           </div>
 
-          <div className="flex items-center gap-2 rounded-lg bg-white px-8 py-4 text-sm text-gray-500 shadow-sm">
-            <Globe size={16} />
+          <div className="flex w-full items-center gap-2 rounded-lg bg-white px-4 py-4 text-sm text-gray-500 shadow-sm lg:max-w-xl">
+            <Globe size={16} className="shrink-0" />
             <input 
               type="url" 
               value={url}
@@ -222,8 +226,8 @@ function ScanPreview(){
                     {score}
                   </h3>
 
-                  <p className="mt-2 text-green-600 font-semibold">
-                    {score >= 90 ? "Excellent" : score >= 70 ? "Good" : "Needs Improvement"}
+                  <p className={`mt-2 font-semibold ${scoreStatusColor}`}>
+                    {scoreStatus}
                   </p>
 
                 </div>
@@ -245,9 +249,9 @@ function ScanPreview(){
 
                   <div className="h-4 overflow-hidden rounded-full bg-gray-200">
 
-                    <div 
-                      className="h-full rounded-full bg-blue-600 transition-all duration-700"
-                      style={{ width: `${score}%` }}
+                    <div
+                      className={`h-full rounded-full transition-all duration-700 ${scoreBarColor}`}
+                      style={{width: `${score}`}}
                     ></div>
 
                   </div>
@@ -334,9 +338,15 @@ function ScanPreview(){
           {scanHistory.length > 0 &&(
 
             <div className="mt-10 border-t border-gray-200 pt-8">
-              <h3 className="text-lg font-bold text-gray-900">
-                Recent Scan
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-gray-900">
+                  Recent Scan
+                </h3>
+
+                <span className="text-sm font-medium text-gray-500">
+                  Latest 3
+                </span>
+              </div>
 
               <div className="mt-4 space-y-3">
                 {scanHistory.map((scan) =>(
