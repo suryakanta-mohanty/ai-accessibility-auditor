@@ -4,6 +4,7 @@ import com.suryakanta.backend.dto.AccessibilityIssue;
 import com.suryakanta.backend.dto.ScanRequest;
 import com.suryakanta.backend.dto.ScanResponse;
 import com.suryakanta.backend.dto.ScanHistoryResponse;
+import com.suryakanta.backend.dto.IssueType;
 import com.suryakanta.backend.entity.ScanResult;
 import com.suryakanta.backend.repository.ScanResultRepository;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,12 @@ public class ScanService {
         List<AccessibilityIssue> issues = accessibilityScanService.findIssues(request.getUrl());
 
         int totalIssues = issues.size();
+
+        int imageIssues = countIssuesByType(issues, IssueType.IMAGE);
+        int buttonIssues = countIssuesByType(issues, IssueType.BUTTON);
+        int linkIssues = countIssuesByType(issues, IssueType.LINK);
+        int pageIssues = countIssuesByType(issues, IssueType.PAGE);
+
         int score = Math.max(100 - (totalIssues * 10), 0);
         LocalDateTime scannedAt = LocalDateTime.now();
 
@@ -37,6 +44,10 @@ public class ScanService {
                 request.getUrl(),
                 score,
                 totalIssues,
+                imageIssues,
+                buttonIssues,
+                linkIssues,
+                pageIssues,
                 scannedAt
         );
 
@@ -59,6 +70,10 @@ public class ScanService {
                         scanResult.getUrl(),
                         scanResult.getAccessibilityScore(),
                         scanResult.getTotalIssues(),
+                        scanResult.getImageIssues(),
+                        scanResult.getButtonIssues(),
+                        scanResult.getLinkIssues(),
+                        scanResult.getPageIssues(),
                         scanResult.getScannedAt()
                 ))
                 .toList();
@@ -72,8 +87,18 @@ public class ScanService {
                         scanResult.getUrl(),
                         scanResult.getAccessibilityScore(),
                         scanResult.getTotalIssues(),
+                        scanResult.getImageIssues(),
+                        scanResult.getButtonIssues(),
+                        scanResult.getLinkIssues(),
+                        scanResult.getPageIssues(),
                         scanResult.getScannedAt()
                 ))
                 .toList();
+    }
+
+    private int countIssuesByType(List<AccessibilityIssue> issues, IssueType issueType){
+        return (int) issues.stream()
+                .filter(issue -> issue.getType() == issueType)
+                .count();
     }
 }

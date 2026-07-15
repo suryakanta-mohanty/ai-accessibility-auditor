@@ -8,6 +8,10 @@ public class ScanHistoryResponse {
     private String url;
     private int accessibilityScore;
     private int totalIssues;
+    private int imageIssues;
+    private int buttonIssues;
+    private int linkIssues;
+    private int pageIssues;
     private LocalDateTime scannedAt;
 
     public ScanHistoryResponse(
@@ -15,12 +19,20 @@ public class ScanHistoryResponse {
             String url,
             int accessibilityScore,
             int totalIssues,
+            int imageIssues,
+            int buttonIssues,
+            int linkIssues,
+            int pageIssues,
             LocalDateTime scannedAt
     ){
         this.id = id;
         this.url = url;
         this.accessibilityScore = accessibilityScore;
         this.totalIssues = totalIssues;
+        this.imageIssues = imageIssues;
+        this.buttonIssues = buttonIssues;
+        this.linkIssues = linkIssues;
+        this.pageIssues = pageIssues;
         this.scannedAt = scannedAt;
     }
 
@@ -38,6 +50,22 @@ public class ScanHistoryResponse {
 
     public int getTotalIssues(){
         return totalIssues;
+    }
+
+    public int getImageIssues(){
+        return imageIssues;
+    }
+
+    public int getButtonIssues(){
+        return buttonIssues;
+    }
+
+    public int getLinkIssues(){
+        return linkIssues;
+    }
+
+    public int getPageIssues(){
+        return pageIssues;
     }
 
     public LocalDateTime getScannedAt(){

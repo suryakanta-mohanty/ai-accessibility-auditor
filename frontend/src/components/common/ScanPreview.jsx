@@ -137,6 +137,27 @@ function ScanPreview(){
   const scoreStatus = score >= 90 ? "Excellent" : score >= 70 ? "Good" : "Needs Improvement";
   const scoreStatusColor = score >= 90 ? "text-green-600" : score >= 70 ? "text-blue-600" : "text-red-600";
   const scoreBarColor = score >= 90 ? "bg-green-600" : score >= 70 ? "bg-blue-600" : "bg-red-600";
+  
+  function getScanCategoryBadges(scan){
+    return[
+      {
+        label: "Images",
+        count: scan.imageIssues,
+      },
+      {
+        label: "Buttons",
+        count: scan.buttonIssues,
+      },
+      {
+        label: "Links",
+        count: scan.linkIssues,
+      },
+      {
+        label: "Pages",
+        count: scan.pageIssues,
+      },
+    ].filter((category) => category.count > 0);
+  }
 
   return(
 
@@ -360,9 +381,25 @@ function ScanPreview(){
                         {scan.url}
                       </p>
 
-                      <p className="mt-1 text-sm text-gray-500">
-                        Issues: {scan.totalIssues} <span>&bull;</span> Scanned:{" "}
-                        {new Date(scan.scannedAt).toLocaleString()}
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {getScanCategoryBadges(scan).map((category) =>(
+                          <span
+                            key={category.label}
+                            className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700"
+                          >
+                            {category.label} {category.count}
+                          </span>
+                        ))}
+
+                        {scan.totalIssues === 0 &&(
+                          <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                            No Issues
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="mt-2 text-sm text-gray-500">
+                        Scanned: {new Date(scan.scannedAt).toLocaleDateString()}
                       </p>
                     </div>
 
