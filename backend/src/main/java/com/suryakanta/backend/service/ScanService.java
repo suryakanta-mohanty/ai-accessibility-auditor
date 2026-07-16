@@ -31,13 +31,17 @@ public class ScanService {
         List<AccessibilityIssue> issues = accessibilityScanService.findIssues(request.getUrl());
 
         int totalIssues = issues.size();
+        boolean websiteAccessFailed = issues.stream()
+                .anyMatch(issue -> issue.getMessage().equals("Unable to access the website"));
 
         int imageIssues = countIssuesByType(issues, IssueType.IMAGE);
         int buttonIssues = countIssuesByType(issues, IssueType.BUTTON);
         int linkIssues = countIssuesByType(issues, IssueType.LINK);
         int pageIssues = countIssuesByType(issues, IssueType.PAGE);
 
-        int score = Math.max(100 - (totalIssues * 10), 0);
+        int score = websiteAccessFailed
+                ? 0
+                : Math.max(100 - (totalIssues * 10), 0);
         LocalDateTime scannedAt = LocalDateTime.now();
 
         ScanResult scanResult = new ScanResult(
