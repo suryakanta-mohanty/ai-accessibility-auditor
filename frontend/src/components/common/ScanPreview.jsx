@@ -96,6 +96,7 @@ function ScanPreview(){
     BUTTON: "Buttons",
     LINK: "Links",
     PAGE: "Pages",
+    FORM: "Forms",
   };
 
   const groupedIssues = scanResult?.issues?.reduce((groups, issue) =>{
@@ -156,6 +157,10 @@ function ScanPreview(){
         label: "Pages",
         count: scan.pageIssues,
       },
+      {
+        label: "Forms",
+        count: scan.formIssues,
+      }
     ].filter((category) => category.count > 0);
   }
 

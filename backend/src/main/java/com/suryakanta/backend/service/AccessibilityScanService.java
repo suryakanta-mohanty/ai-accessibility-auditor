@@ -28,6 +28,7 @@ public class AccessibilityScanService {
             checkImagesAltText(document, issues);
             checkButtonsAccessibleText(document, issues);
             checkLinksReadableText(document, issues);
+            checkInputAccessibleLabels(document, issues);
 
         } catch (IOException exception) {
             issues.add(new AccessibilityIssue(
@@ -125,6 +126,53 @@ public class AccessibilityScanService {
                         "Link without readable text found",
                         href,
                         "Add readable link text or an aria-label so users understand where the link will take them."
+                ));
+            }
+        }
+    }
+
+    private void checkInputAccessibleLabels(Document document, List<AccessibilityIssue> issues) {
+        for (Element input : document.select("input, textarea, select")) {
+            String inputType = input.attr("type").trim();
+
+            if(
+                    inputType.equalsIgnoreCase("hidden")
+                    || inputType.equalsIgnoreCase("submit")
+                    || inputType.equalsIgnoreCase("button")
+                    || inputType.equalsIgnoreCase("reset")
+            ) {
+                continue;
+            }
+
+            boolean hasAriaLabel = !input.attr("aria-label").trim().isEmpty();
+            boolean hasAriaLabelledBy = !input.attr("aria-labelledby").trim().isEmpty();
+            boolean hasTitle = !input.attr("title").trim().isEmpty();
+
+            String id = input.attr("id").trim();
+            boolean hasLabelForId = !id.isEmpty()
+                    && document.selectFirst("label[for=" + id + "]") != null;
+
+            boolean hasParentLabel = input.parents().stream()
+                    .anyMatch(parent -> parent.tagName().equalsIgnoreCase("label"));
+
+            if(
+                    !hasAriaLabel
+                    && !hasAriaLabelledBy
+                    && !hasTitle
+                    && !hasLabelForId
+                    && !hasParentLabel
+            ) {
+                String inputHtml = input.outerHtml();
+
+                if(inputHtml.length() > 100){
+                    inputHtml = inputHtml.substring(0, 100) + "...";
+                }
+
+                issues.add(new AccessibilityIssue(
+                        IssueType.FORM,
+                        "Input field is missing an accessible label",
+                        inputHtml,
+                        "Add a visible label, aria-label, aria-labelledby, or title so screen reader users understand the input purpose."
                 ));
             }
         }
