@@ -98,7 +98,14 @@ function ScanPreview(){
     PAGE: "Pages",
     FORM: "Forms",
     HEADING: "Headings",
+    IFRAME: "Iframes",
   };
+
+  function getIssueTypeLabel(type){
+    const normalizedType = type?.trim().toUpperCase();
+
+    return issueTypeLabels[normalizedType] || normalizedType;
+  }
 
   const groupedIssues = scanResult?.issues?.reduce((groups, issue) =>{
     if(!groups[issue.type]){
@@ -112,7 +119,7 @@ function ScanPreview(){
   const issueTabs = Object.entries(groupedIssues)
     .map(([type, issues]) => ({
       type,
-      label: issueTypeLabels[type] || type,
+      label: getIssueTypeLabel(type),
       count: issues.length,
     }))
     .filter((tab) => tab.count > 0)
@@ -165,7 +172,11 @@ function ScanPreview(){
       {
         label: "Headings",
         count: scan.headingIssues,
-      }
+      },
+      {
+        label: "Iframes",
+        count: scan.iframeIssues,
+      },
     ].filter((category) => category.count > 0);
   }
 
@@ -345,7 +356,7 @@ function ScanPreview(){
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                           <div>
                             <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-                              {issueTypeLabels[issue.type] || issue.type}
+                              {getIssueTypeLabel(issue.type)}
                             </span>
 
                             <h3 className="mt-3 text-base font-bold text-gray-900">

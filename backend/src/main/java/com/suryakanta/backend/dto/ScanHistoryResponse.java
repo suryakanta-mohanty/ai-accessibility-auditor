@@ -14,6 +14,7 @@ public class ScanHistoryResponse {
     private int pageIssues;
     private int formIssues;
     private int headingIssues;
+    private int iframeIssues;
     private LocalDateTime scannedAt;
 
     public ScanHistoryResponse(
@@ -27,6 +28,7 @@ public class ScanHistoryResponse {
             int pageIssues,
             int formIssues,
             int headingIssues,
+            int iframeIssues,
             LocalDateTime scannedAt
     ){
         this.id = id;
@@ -39,6 +41,7 @@ public class ScanHistoryResponse {
         this.pageIssues = pageIssues;
         this.formIssues = formIssues;
         this.headingIssues = headingIssues;
+        this.iframeIssues = iframeIssues;
         this.scannedAt = scannedAt;
     }
 
@@ -80,6 +83,10 @@ public class ScanHistoryResponse {
 
     public int getHeadingIssues(){
         return headingIssues;
+    }
+
+    public int getIframeIssues(){
+        return iframeIssues;
     }
 
     public LocalDateTime getScannedAt(){

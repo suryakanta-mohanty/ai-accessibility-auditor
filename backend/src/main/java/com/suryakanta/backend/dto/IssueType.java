@@ -6,5 +6,6 @@ public enum IssueType {
     LINK,
     PAGE,
     FORM,
-    HEADING
+    HEADING,
+    IFRAME
 }

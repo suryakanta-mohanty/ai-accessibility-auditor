@@ -20,6 +20,7 @@ public class ScanResult {
     private int pageIssues;
     private int formIssues;
     private int headingIssues;
+    private int iframeIssues;
     private LocalDateTime scannedAt;
 
     public ScanResult(){
@@ -35,6 +36,7 @@ public class ScanResult {
             int pageIssues,
             int formIssues,
             int headingIssues,
+            int iframeIssues,
             LocalDateTime scannedAt
     ){
         this.url = url;
@@ -46,6 +48,7 @@ public class ScanResult {
         this.pageIssues = pageIssues;
         this.formIssues = formIssues;
         this.headingIssues = headingIssues;
+        this.iframeIssues = iframeIssues;
         this.scannedAt = scannedAt;
     }
 
@@ -87,6 +90,10 @@ public class ScanResult {
 
     public int getHeadingIssues(){
         return headingIssues;
+    }
+
+    public int getIframeIssues(){
+        return iframeIssues;
     }
 
     public LocalDateTime getScannedAt(){

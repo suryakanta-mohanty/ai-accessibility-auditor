@@ -30,6 +30,7 @@ public class AccessibilityScanService {
             checkLinksReadableText(document, issues);
             checkInputAccessibleLabels(document, issues);
             checkHeadingStructure(document, issues);
+            checkIframeTitles(document, issues);
 
         } catch (IOException exception) {
             issues.add(new AccessibilityIssue(
@@ -180,7 +181,7 @@ public class AccessibilityScanService {
     }
 
     private void checkHeadingStructure(Document document, List<AccessibilityIssue> issues){
-        List<Element> headings = document.select("h1, h2, h3, h4, h5. h6");
+        List<Element> headings = document.select("h1, h2, h3, h4, h5, h6");
 
         long h1Count = headings.stream()
                 .filter(heading -> heading.tagName().equalsIgnoreCase("h1"))
@@ -228,6 +229,28 @@ public class AccessibilityScanService {
             }
 
             previousLevel = currentLevel;
+        }
+    }
+
+    private void checkIframeTitles(Document document, List<AccessibilityIssue> issues){
+        for(Element iframe: document.select("iframe")){
+            boolean hasTitleAttribute = iframe.hasAttr("title");
+            String title = iframe.attr("title");
+
+            if(!hasTitleAttribute || title.isEmpty()){
+                String iframeSource = iframe.attr("src");
+
+                if(iframeSource.isBlank()){
+                    iframeSource = "Iframe source is not available";
+                }
+
+                issues.add(new AccessibilityIssue(
+                        IssueType.IFRAME,
+                        "Iframe is missing a descriptive title",
+                        iframeSource,
+                        "Add a meaningful title attribute to the iframe so screen reader users understand its purpose."
+                ));
+            }
         }
     }
 
