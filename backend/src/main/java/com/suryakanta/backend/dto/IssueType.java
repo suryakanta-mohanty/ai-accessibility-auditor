@@ -5,5 +5,6 @@ public enum IssueType {
     BUTTON,
     LINK,
     PAGE,
-    FORM
+    FORM,
+    HEADING
 }

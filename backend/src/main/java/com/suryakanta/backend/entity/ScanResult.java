@@ -19,6 +19,7 @@ public class ScanResult {
     private int linkIssues;
     private int pageIssues;
     private int formIssues;
+    private int headingIssues;
     private LocalDateTime scannedAt;
 
     public ScanResult(){
@@ -33,6 +34,7 @@ public class ScanResult {
             int linkIssues,
             int pageIssues,
             int formIssues,
+            int headingIssues,
             LocalDateTime scannedAt
     ){
         this.url = url;
@@ -43,6 +45,7 @@ public class ScanResult {
         this.linkIssues = linkIssues;
         this.pageIssues = pageIssues;
         this.formIssues = formIssues;
+        this.headingIssues = headingIssues;
         this.scannedAt = scannedAt;
     }
 
@@ -80,6 +83,10 @@ public class ScanResult {
 
     public int getFormIssues(){
         return formIssues;
+    }
+
+    public int getHeadingIssues(){
+        return headingIssues;
     }
 
     public LocalDateTime getScannedAt(){

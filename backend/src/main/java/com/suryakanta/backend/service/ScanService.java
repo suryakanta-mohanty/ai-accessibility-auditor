@@ -39,6 +39,7 @@ public class ScanService {
         int linkIssues = countIssuesByType(issues, IssueType.LINK);
         int pageIssues = countIssuesByType(issues, IssueType.PAGE);
         int formIssues = countIssuesByType(issues, IssueType.FORM);
+        int headingIssues = countIssuesByType(issues, IssueType.HEADING);
 
         int score = websiteAccessFailed
                 ? 0
@@ -54,6 +55,7 @@ public class ScanService {
                 linkIssues,
                 pageIssues,
                 formIssues,
+                headingIssues,
                 scannedAt
         );
 
@@ -81,6 +83,7 @@ public class ScanService {
                         scanResult.getLinkIssues(),
                         scanResult.getPageIssues(),
                         scanResult.getFormIssues(),
+                        scanResult.getHeadingIssues(),
                         scanResult.getScannedAt()
                 ))
                 .toList();
@@ -99,6 +102,7 @@ public class ScanService {
                         scanResult.getLinkIssues(),
                         scanResult.getPageIssues(),
                         scanResult.getFormIssues(),
+                        scanResult.getHeadingIssues(),
                         scanResult.getScannedAt()
                 ))
                 .toList();

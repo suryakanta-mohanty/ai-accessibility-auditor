@@ -29,6 +29,7 @@ public class AccessibilityScanService {
             checkButtonsAccessibleText(document, issues);
             checkLinksReadableText(document, issues);
             checkInputAccessibleLabels(document, issues);
+            checkHeadingStructure(document, issues);
 
         } catch (IOException exception) {
             issues.add(new AccessibilityIssue(
@@ -175,6 +176,58 @@ public class AccessibilityScanService {
                         "Add a visible label, aria-label, aria-labelledby, or title so screen reader users understand the input purpose."
                 ));
             }
+        }
+    }
+
+    private void checkHeadingStructure(Document document, List<AccessibilityIssue> issues){
+        List<Element> headings = document.select("h1, h2, h3, h4, h5. h6");
+
+        long h1Count = headings.stream()
+                .filter(heading -> heading.tagName().equalsIgnoreCase("h1"))
+                .count();
+
+        if(h1Count == 0){
+            issues.add(new AccessibilityIssue(
+                    IssueType.HEADING,
+                    "Page is missing an h1 heading",
+                    "<h1>",
+                    "Add a clear h1 heading that describes the main purpose of the page."
+            ));
+        }
+
+        if(h1Count > 1){
+            issues.add(new AccessibilityIssue(
+                    IssueType.HEADING,
+                    "Page has multiple h1 headings",
+                    "h1 count: " + h1Count,
+                    "Use a single h1 for the main page title and use h2-h6 for sub-sections."
+            ));
+        }
+
+        int previousLevel = 0;
+        for(Element heading : headings){
+            int currentLevel = Integer.parseInt(heading.tagName().substring(1));
+
+            if(previousLevel != 0 && currentLevel > previousLevel + 1){
+                String headingText = heading.text().trim();
+
+                if(headingText.isBlank()){
+                    headingText = heading.outerHtml();
+                }
+
+                if(headingText.length() > 100){
+                    headingText = headingText.substring(0, 100) + "...";
+                }
+
+                issues.add(new AccessibilityIssue(
+                        IssueType.HEADING,
+                        "Heading level is skipped",
+                        heading.tagName() + ": " + headingText,
+                        "Do not skip heading levels. Use headings in order, such as h1 followed by h2, then h3"
+                ));
+            }
+
+            previousLevel = currentLevel;
         }
     }
 
