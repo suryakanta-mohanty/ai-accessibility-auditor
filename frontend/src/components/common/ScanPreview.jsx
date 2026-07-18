@@ -192,6 +192,18 @@ function ScanPreview(){
     return "bg-red-100 text-red-700";
   }
 
+  function getSeverityClasses(severity){
+    if(severity === "HIGH"){
+      return "bg-red-100 text-red-700";
+    }
+
+    if(severity === "MEDIUM"){
+      return "bg-yellow-100 text-yellow-700";
+    }
+
+    return "bg-blue-100 text-blue-700";
+  }
+
   return(
 
     <section id="scan-preview" className="px-6 py-20">
@@ -355,9 +367,19 @@ function ScanPreview(){
 
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                           <div>
-                            <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-                              {getIssueTypeLabel(issue.type)}
-                            </span>
+                            <div className="flex flex-wrap gap-2">
+                              <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                                {getIssueTypeLabel(issue.type)}
+                              </span>
+
+                              <span
+                                className={`rounded-full px-3 py-1 text-xs font-semibold ${getSeverityClasses(
+                                  issue.severity
+                                )}`}
+                              >
+                                {issue.severity}
+                              </span>
+                            </div>
 
                             <h3 className="mt-3 text-base font-bold text-gray-900">
                               {issue.message}
