@@ -204,6 +204,34 @@ function ScanPreview(){
     return "bg-blue-100 text-blue-700";
   }
 
+  const severityCounts = scanResult?.issues?.reduce(
+    (counts, issue) => {
+      if(issue.severity === "HIGH"){
+        counts.high += 1;
+
+      } else if(issue.severity === "MEDIUM"){
+        counts.medium += 1;
+
+      } else if(issue.severity === "LOW"){
+        counts.low += 1;
+      }
+
+      return counts;
+    },
+    {
+      high: 0,
+      medium: 0,
+      low: 0,
+    }
+
+  ) || {
+
+    high: 0,
+    medium: 0,
+    low: 0,
+
+  };
+
   return(
 
     <section id="scan-preview" className="px-6 py-20">
@@ -332,6 +360,40 @@ function ScanPreview(){
                 </div>
 
               </div>
+
+              {scanResult.totalIssues > 0 && (
+                <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-red-100 bg-red-50 px-5 py-4">
+                    <p className="text-sm font-medium text-red-700">
+                      High Issues
+                    </p>
+
+                    <p className="mt-2 text-3xl font-bold text-red-700">
+                      {severityCounts.high}
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-yellow-100 bg-yellow-50 px-5 py-4">
+                    <p className="text-sm font-medium text-yellow-700">
+                      Medium Issues 
+                    </p>
+
+                    <p className="mt-2 text-3xl font-bold text-yellow-700">
+                      {severityCounts.medium}
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-blue-100 bg-blue-50 px-5 py-4">
+                    <p className="text-sm font-medium text-blue-700">
+                      Low Issues
+                    </p>
+
+                    <p className="mt-2 text-3xl font-bold text-blue-700">
+                      {severityCounts.low}
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* Dynamic result */}
               {scanResult && scanResult.totalIssues === 0 && (
