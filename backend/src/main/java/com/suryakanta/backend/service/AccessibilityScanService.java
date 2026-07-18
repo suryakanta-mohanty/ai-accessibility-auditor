@@ -32,6 +32,7 @@ public class AccessibilityScanService {
             checkInputAccessibleLabels(document, issues);
             checkHeadingStructure(document, issues);
             checkIframeTitles(document, issues);
+            checkMetaDescription(document, issues);
 
         } catch (IOException exception) {
             issues.add(new AccessibilityIssue(
@@ -55,6 +56,23 @@ public class AccessibilityScanService {
                    "<title>",
                    "Add a clear page title so users and screen readers can identify the page purpose."
            ));
+        }
+    }
+
+    private void checkMetaDescription(Document document, List<AccessibilityIssue> issues){
+        Element metaDescription = document.selectFirst("meta[name=description]");
+
+        if(
+                metaDescription == null
+                || metaDescription.attr("content").trim().isEmpty()
+        ) {
+            issues.add(new AccessibilityIssue(
+                    IssueType.PAGE,
+                    IssueSeverity.LOW,
+                    "Meta Description is Missing",
+                    "<meta name=\"description\">",
+                    "Add a concise meta description that explains the page purpose."
+            ));
         }
     }
 
