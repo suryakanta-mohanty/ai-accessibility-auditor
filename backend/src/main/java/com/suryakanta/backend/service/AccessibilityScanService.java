@@ -2,6 +2,7 @@ package com.suryakanta.backend.service;
 
 import com.suryakanta.backend.dto.AccessibilityIssue;
 import com.suryakanta.backend.dto.IssueType;
+import com.suryakanta.backend.dto.IssueSeverity;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,6 +36,7 @@ public class AccessibilityScanService {
         } catch (IOException exception) {
             issues.add(new AccessibilityIssue(
                     IssueType.PAGE,
+                    IssueSeverity.HIGH,
                     "Unable to access the website",
                     url,
                     "Check if the URL is reachable, publicly accessible, and not blocking automated requests."
@@ -48,6 +50,7 @@ public class AccessibilityScanService {
         if (document.title() == null || document.title().trim().isEmpty()) {
            issues.add(new AccessibilityIssue(
                    IssueType.PAGE,
+                   IssueSeverity.MEDIUM,
                    "Page title is missing",
                    "<title>",
                    "Add a clear page title so users and screen readers can identify the page purpose."
@@ -61,6 +64,7 @@ public class AccessibilityScanService {
         if (html == null || html.attr("lang").trim().isEmpty()) {
             issues.add(new AccessibilityIssue(
                     IssueType.PAGE,
+                    IssueSeverity.MEDIUM,
                     "HTML lang attribute is missing",
                     "<html>",
                     "Add a lang attribute to the html tag so screen readers can use the correct pronunciation."
@@ -81,6 +85,7 @@ public class AccessibilityScanService {
 
                 issues.add(new AccessibilityIssue(
                         IssueType.IMAGE,
+                        IssueSeverity.MEDIUM,
                         "Image is missing alt text",
                         imageSource,
                         "Add meaningful alt text to images so screen reader users can understand the visual content."
@@ -103,6 +108,7 @@ public class AccessibilityScanService {
 
                 issues.add(new AccessibilityIssue(
                         IssueType.BUTTON,
+                        IssueSeverity.HIGH,
                         "Button without accessible text found",
                         buttonHtml,
                         "Add visible text or an aria-label to buttons so assistive technologies can describe their purpose."
@@ -125,6 +131,7 @@ public class AccessibilityScanService {
 
                 issues.add(new AccessibilityIssue(
                         IssueType.LINK,
+                        IssueSeverity.HIGH,
                         "Link without readable text found",
                         href,
                         "Add readable link text or an aria-label so users understand where the link will take them."
@@ -172,6 +179,7 @@ public class AccessibilityScanService {
 
                 issues.add(new AccessibilityIssue(
                         IssueType.FORM,
+                        IssueSeverity.HIGH,
                         "Input field is missing an accessible label",
                         inputHtml,
                         "Add a visible label, aria-label, aria-labelledby, or title so screen reader users understand the input purpose."
@@ -190,6 +198,7 @@ public class AccessibilityScanService {
         if(h1Count == 0){
             issues.add(new AccessibilityIssue(
                     IssueType.HEADING,
+                    IssueSeverity.MEDIUM,
                     "Page is missing an h1 heading",
                     "<h1>",
                     "Add a clear h1 heading that describes the main purpose of the page."
@@ -199,6 +208,7 @@ public class AccessibilityScanService {
         if(h1Count > 1){
             issues.add(new AccessibilityIssue(
                     IssueType.HEADING,
+                    IssueSeverity.MEDIUM,
                     "Page has multiple h1 headings",
                     "h1 count: " + h1Count,
                     "Use a single h1 for the main page title and use h2-h6 for sub-sections."
@@ -222,6 +232,7 @@ public class AccessibilityScanService {
 
                 issues.add(new AccessibilityIssue(
                         IssueType.HEADING,
+                        IssueSeverity.LOW,
                         "Heading level is skipped",
                         heading.tagName() + ": " + headingText,
                         "Do not skip heading levels. Use headings in order, such as h1 followed by h2, then h3"
@@ -246,6 +257,7 @@ public class AccessibilityScanService {
 
                 issues.add(new AccessibilityIssue(
                         IssueType.IFRAME,
+                        IssueSeverity.MEDIUM,
                         "Iframe is missing a descriptive title",
                         iframeSource,
                         "Add a meaningful title attribute to the iframe so screen reader users understand its purpose."

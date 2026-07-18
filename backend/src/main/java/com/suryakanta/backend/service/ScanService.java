@@ -42,9 +42,11 @@ public class ScanService {
         int headingIssues = countIssuesByType(issues, IssueType.HEADING);
         int iframeIssues = countIssuesByType(issues, IssueType.IFRAME);
 
+        int penalty = calculatePenalty(issues);
+
         int score = websiteAccessFailed
                 ? 0
-                : Math.max(100 - (totalIssues * 10), 0);
+                : Math.max(100 - penalty, 0);
         LocalDateTime scannedAt = LocalDateTime.now();
 
         ScanResult scanResult = new ScanResult(
@@ -116,5 +118,15 @@ public class ScanService {
         return (int) issues.stream()
                 .filter(issue -> issue.getType() == issueType)
                 .count();
+    }
+
+    private int calculatePenalty(List<AccessibilityIssue> issues){
+        return issues.stream()
+                .mapToInt(issue -> switch(issue.getSeverity()){
+                    case HIGH -> 15;
+                    case MEDIUM -> 10;
+                    case LOW -> 5;
+                })
+                .sum();
     }
 }
