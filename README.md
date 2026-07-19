@@ -125,7 +125,7 @@ GET /api/scan/history/recent
 ## How to Run Locally
 
 ### 1. Clone the repository
-<small>You can fork the repo, if you want.</small>
+> _You can fork the repo, if you want 😶‍🌫️_
 
 ```Bash
 git clone https://github.com/suryakanta-mohanty/ai-accessibility-auditor.git
@@ -165,9 +165,18 @@ http://localhost:8080
 ### 3. Run the Frontend
 *Open a new terminal:*
 
+**Switch to Frontend Folder:**
 ```Bash
 cd frontend/
+```
+
+**Insatll Dependencies:**
+```Bash
 npm install
+```
+
+**Run the project locally:**
+```Bash
 npm run dev
 ```
 
@@ -192,8 +201,24 @@ http://localhost:5173
 - Dashboard with analytics
 - WCAG rule mapping
 
+## Screenshots
+
+### Homepage
+
+![Homepage](screenshots/home-page.png)
+
+### Scan Repot
+
+![Scan Report](screenshots/scan-repot.png)
+
+### Recent Scans
+
+![Recent Scans](screenshots/recent-scans.png)
+
 ## Author
 **Suryakanta Mohanty**
 
 GitHub: [suryakanta-mohanty ↗](https://github.com/suryakanta-mohanty)
+LinkedIn: [suryakanta-mohanty ↗](https://www.linkedin.com/in/suryakanta-mohanty/)
 
+*Thank you 😀*
