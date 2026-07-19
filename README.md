@@ -180,7 +180,7 @@ npm install
 npm run dev
 ```
 
-**Frontend will start at:**
+*Frontend will start at:*
 ```
 http://localhost:5173
 ```
@@ -219,6 +219,7 @@ http://localhost:5173
 **Suryakanta Mohanty**
 
 GitHub: [suryakanta-mohanty ↗](https://github.com/suryakanta-mohanty)
+
 LinkedIn: [suryakanta-mohanty ↗](https://www.linkedin.com/in/suryakanta-mohanty/)
 
 *Thank you 😀*
