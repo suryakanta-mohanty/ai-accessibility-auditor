@@ -213,7 +213,7 @@ http://localhost:5173
 
 ### Scan Repot
 
-![Scan Report](screenshots/scan-repot.png)
+![Scan Report](screenshots/scan-report.png)
 
 ### Recent Scans
 

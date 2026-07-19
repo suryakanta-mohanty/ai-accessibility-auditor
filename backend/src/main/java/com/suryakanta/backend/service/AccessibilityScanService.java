@@ -33,6 +33,7 @@ public class AccessibilityScanService {
             checkHeadingStructure(document, issues);
             checkIframeTitles(document, issues);
             checkMetaDescription(document, issues);
+            checkPageLandmarks(document, issues);
 
         } catch (IOException exception) {
             issues.add(new AccessibilityIssue(
@@ -281,6 +282,31 @@ public class AccessibilityScanService {
                         "Add a meaningful title attribute to the iframe so screen reader users understand its purpose."
                 ));
             }
+        }
+    }
+
+    private void checkPageLandmarks(Document document, List<AccessibilityIssue> issues){
+        int mainCount = document.select("main, [role=main]").size();
+
+        if(mainCount == 0){
+            issues.add(new AccessibilityIssue(
+                    IssueType.PAGE,
+                    IssueSeverity.MEDIUM,
+                    "Main landmark is missing",
+                    "<main>",
+                    "Add a main landmark using the <main> tag or role=\"main\" so screen reader users can quickly find the main content."
+            ));
+        }
+
+        if(mainCount > 1){
+            issues.add(new AccessibilityIssue(
+                    IssueType.PAGE,
+                    IssueSeverity.MEDIUM,
+                    "Multiple main landmarks found",
+                    "main count" + mainCount,
+                    "Use only one main landmark per page to clearly identify the primary content area."
+            ));
+            
         }
     }
 
