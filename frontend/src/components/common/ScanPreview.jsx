@@ -286,6 +286,12 @@ function ScanPreview(){
             Accessibility Report
           </h2>
 
+          <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 px-5 py-4">
+            <p className="text-sm leading-6 text-blue-700">
+              <span className="font-semibold">Note:</span> This scanner checks the initial HTML response of a website. JavaScript-rendered content may not be fully detected.
+            </p>
+          </div>
+
           {error && (
             <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
               {error}

@@ -52,9 +52,9 @@ public class AccessibilityScanService {
            issues.add(new AccessibilityIssue(
                    IssueType.PAGE,
                    IssueSeverity.MEDIUM,
-                   "Page title is missing",
+                   "Page title was not found in initial HTML",
                    "<title>",
-                   "Add a clear page title so users and screen readers can identify the page purpose."
+                   "Add a clear <title> tag in the server-rendered HTML, or use a JavaScript-rendered scanner for dynamic pages."
            ));
         }
     }
@@ -69,9 +69,9 @@ public class AccessibilityScanService {
             issues.add(new AccessibilityIssue(
                     IssueType.PAGE,
                     IssueSeverity.LOW,
-                    "Meta Description is Missing",
+                    "Meta description was not found in initial HTML",
                     "<meta name=\"description\">",
-                    "Add a concise meta description that explains the page purpose."
+                    "Add a meta description in the server-rendered HTML, or use a JavaScript-rendered scanner for dynamic pages."
             ));
         }
     }

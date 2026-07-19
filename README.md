@@ -129,6 +129,10 @@ GET /api/scan/history/recent
 
 ```Bash
 git clone https://github.com/suryakanta-mohanty/ai-accessibility-auditor.git
+```
+
+**Switch to project folder:**
+```Bash
 cd ai-accessibility-auditor/
 ```
 
@@ -220,6 +224,6 @@ http://localhost:5173
 
 GitHub: [suryakanta-mohanty ↗](https://github.com/suryakanta-mohanty)
 
-LinkedIn: [suryakanta-mohanty ↗](https://www.linkedin.com/in/suryakanta-mohanty/)
+LinkedIn: [in/suryakanta-mohanty ↗](https://www.linkedin.com/in/suryakanta-mohanty/)
 
 *Thank you 😀*
