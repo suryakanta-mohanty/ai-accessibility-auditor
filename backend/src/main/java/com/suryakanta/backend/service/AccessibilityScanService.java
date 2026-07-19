@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AccessibilityScanService {
@@ -34,6 +36,7 @@ public class AccessibilityScanService {
             checkIframeTitles(document, issues);
             checkMetaDescription(document, issues);
             checkPageLandmarks(document, issues);
+            checkDuplicateIds(document, issues);
 
         } catch (IOException exception) {
             issues.add(new AccessibilityIssue(
@@ -306,7 +309,34 @@ public class AccessibilityScanService {
                     "main count" + mainCount,
                     "Use only one main landmark per page to clearly identify the primary content area."
             ));
-            
+
+        }
+    }
+
+    private void checkDuplicateIds(Document document, List<AccessibilityIssue> issues){
+        Map<String, Integer> idCounts = new HashMap<>();
+
+        for (Element element : document.select("[id]")){
+            String id = element.attr("id").trim();
+
+            if(!id.isEmpty()){
+                idCounts.put(id, idCounts.getOrDefault(id, 0) + 1);
+            }
+        }
+
+        for(Map.Entry<String, Integer> entry : idCounts.entrySet()){
+            String id = entry.getKey();
+            int count = entry.getValue();
+
+            if(count > 1){
+                issues.add(new AccessibilityIssue(
+                        IssueType.PAGE,
+                        IssueSeverity.MEDIUM,
+                        "Duplicate id attribute found",
+                        "id=\"" + id + "\" appears " + count + " times",
+                        "Use unique id values so labels, ARIA references, anchor links, and JavaScript behavior work correctly."
+                ));
+            }
         }
     }
 
