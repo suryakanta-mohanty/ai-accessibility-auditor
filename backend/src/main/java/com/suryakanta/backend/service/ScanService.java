@@ -5,7 +5,9 @@ import com.suryakanta.backend.dto.ScanRequest;
 import com.suryakanta.backend.dto.ScanResponse;
 import com.suryakanta.backend.dto.ScanHistoryResponse;
 import com.suryakanta.backend.dto.IssueType;
+import com.suryakanta.backend.dto.SavedScanReportResponse;
 import com.suryakanta.backend.entity.ScanResult;
+import com.suryakanta.backend.entity.ScanIssue;
 import com.suryakanta.backend.repository.ScanResultRepository;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +64,19 @@ public class ScanService {
                 iframeIssues,
                 scannedAt
         );
+
+        for(AccessibilityIssue issue : issues){
+            ScanIssue scanIssue = new ScanIssue(
+                    issue.getType(),
+                    issue.getSeverity(),
+                    issue.getMessage(),
+                    issue.getElement(),
+                    issue.getRecommendation(),
+                    scanResult
+            );
+
+            scanResult.addIssue(scanIssue);
+        }
 
         scanResultRepository.save(scanResult);
 
@@ -128,5 +143,37 @@ public class ScanService {
                     case LOW -> 5;
                 })
                 .sum();
+    }
+
+    public SavedScanReportResponse getScanReportById(Long id) {
+        ScanResult scanResult = scanResultRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Scan report not found"));
+
+        List<AccessibilityIssue> issues = scanResult.getIssues()
+                .stream()
+                .map(issue -> new AccessibilityIssue(
+                        issue.getType(),
+                        issue.getSeverity(),
+                        issue.getMessage(),
+                        issue.getElement(),
+                        issue.getRecommendation()
+                ))
+                .toList();
+
+        return new SavedScanReportResponse(
+                scanResult.getId(),
+                scanResult.getUrl(),
+                scanResult.getAccessibilityScore(),
+                scanResult.getTotalIssues(),
+                scanResult.getImageIssues(),
+                scanResult.getButtonIssues(),
+                scanResult.getLinkIssues(),
+                scanResult.getPageIssues(),
+                scanResult.getFormIssues(),
+                scanResult.getHeadingIssues(),
+                scanResult.getIframeIssues(),
+                issues,
+                scanResult.getScannedAt()
+        );
     }
 }

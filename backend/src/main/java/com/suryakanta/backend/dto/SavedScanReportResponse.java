@@ -1,22 +1,18 @@
-package com.suryakanta.backend.entity;
+package com.suryakanta.backend.dto;
 
-import jakarta.persistence.*;
+import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Table(name = "scan_results")
-public class ScanResult {
+@Getter
+public class SavedScanReportResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String url;
     private int accessibilityScore;
     private int totalIssues;
+
     private int imageIssues;
     private int buttonIssues;
     private int linkIssues;
@@ -24,15 +20,12 @@ public class ScanResult {
     private int formIssues;
     private int headingIssues;
     private int iframeIssues;
+
+    private List<AccessibilityIssue> issues;
     private LocalDateTime scannedAt;
 
-    @OneToMany(mappedBy = "scanResult", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ScanIssue> issues = new ArrayList<>();
-
-    public ScanResult(){
-    }
-
-    public ScanResult(
+    public SavedScanReportResponse(
+            Long id,
             String url,
             int accessibilityScore,
             int totalIssues,
@@ -43,8 +36,10 @@ public class ScanResult {
             int formIssues,
             int headingIssues,
             int iframeIssues,
+            List<AccessibilityIssue> issues,
             LocalDateTime scannedAt
-    ){
+    ) {
+        this.id = id;
         this.url = url;
         this.accessibilityScore = accessibilityScore;
         this.totalIssues = totalIssues;
@@ -55,11 +50,8 @@ public class ScanResult {
         this.formIssues = formIssues;
         this.headingIssues = headingIssues;
         this.iframeIssues = iframeIssues;
+        this.issues = issues;
         this.scannedAt = scannedAt;
-    }
-
-    public void addIssue(ScanIssue issue){
-        issues.add(issue);
     }
 
     public Long getId(){
@@ -90,10 +82,6 @@ public class ScanResult {
         return linkIssues;
     }
 
-    public int getPageIssues(){
-        return pageIssues;
-    }
-
     public int getFormIssues(){
         return formIssues;
     }
@@ -106,11 +94,12 @@ public class ScanResult {
         return iframeIssues;
     }
 
+    public List<AccessibilityIssue> getIssues(){
+        return issues;
+    }
+
     public LocalDateTime getScannedAt(){
         return scannedAt;
     }
 
-    public List<ScanIssue> getIssues(){
-        return issues;
-    }
 }

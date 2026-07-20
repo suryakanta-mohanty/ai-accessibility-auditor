@@ -3,6 +3,7 @@ package com.suryakanta.backend.controller;
 import com.suryakanta.backend.dto.ScanRequest;
 import com.suryakanta.backend.dto.ScanResponse;
 import com.suryakanta.backend.dto.ScanHistoryResponse;
+import com.suryakanta.backend.dto.SavedScanReportResponse;
 import com.suryakanta.backend.service.ScanService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,11 @@ public class ScanController {
     @GetMapping("/history/recent")
     public List<ScanHistoryResponse> getRecentScanHistory() {
         return scanService.getRecentScans();
+    }
+
+    @GetMapping("/{id}")
+    public SavedScanReportResponse getScanReportById(@PathVariable Long id){
+        return scanService.getScanReportById(id);
     }
 
 }
