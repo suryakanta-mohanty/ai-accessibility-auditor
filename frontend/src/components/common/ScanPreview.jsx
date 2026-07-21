@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Globe, LoaderCircle } from "lucide-react";
-import { scanWebsite, getScanHistory } from "../../services/api";
+import { scanWebsite, getScanHistory, getScanReportById } from "../../services/api";
 
 function ScanPreview(){
 
@@ -10,7 +10,7 @@ function ScanPreview(){
   const [error, setError] = useState("");
   const [scanHistory, setScanHistory] = useState([]);
   const [activeIssueTab, setActiveIssueTab] = useState("");
-
+  const [loadingReportId, setLoadingReportId] = useState(null);
   
 
   useEffect(() => {
@@ -232,6 +232,28 @@ function ScanPreview(){
 
   };
 
+  async function handleViewReport(id){
+    try{
+      setError("");
+      setLoadingReportId(id);
+      setActiveIssueTab("");
+
+      const data = await getScanReportById(id);
+      setScanResult(data);
+
+      setTimeout(() => {
+        document.getElementById("accessibility-report")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+
+    } catch (error){
+      setError(error.message);
+
+    } finally {
+      setLoadingReportId(null);
+    }
+  }
+
   return(
 
     <section id="scan-preview" className="px-6 py-20">
@@ -282,7 +304,7 @@ function ScanPreview(){
         {/* Report */}
         <div className="p-8">
 
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 id="accessibility-report" className="text-2xl font-bold text-gray-900">
             Accessibility Report
           </h2>
 
@@ -525,6 +547,7 @@ function ScanPreview(){
                       <p className="mt-2 text-sm text-gray-500">
                         Scanned: {new Date(scan.scannedAt).toLocaleDateString()}
                       </p>
+
                     </div>
 
                     <span 
@@ -534,6 +557,15 @@ function ScanPreview(){
                     >
                       Score {scan.accessibilityScore}
                     </span>
+                    
+                    <button
+                        type="button"
+                        onClick={() => handleViewReport(scan.id)}
+                        disabled={loadingReportId === scan.id}
+                        className="mt-4 cursor-pointer rounded-lg bg-blue-100 text-blue-700 px-4 py-2 text-sm font-semibold text-blue-700 transition-all duration-300 hover:bg-blue-200 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {loadingReportId === scan.id ? "Loading..." : "View Report"}
+                      </button>
 
                   </div>
                 ))}

@@ -44,3 +44,15 @@ export async function getScanHistory(){
   return response.json();
 
 }
+
+export async function getScanReportById(id){
+  const response = await fetch(`${API_BASE_URL}/scan/${id}`);
+
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error(data.message || "Failed to fetch scan report");
+  }
+
+  return data;
+}
