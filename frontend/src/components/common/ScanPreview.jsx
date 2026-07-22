@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { Globe, LoaderCircle } from "lucide-react";
-import { scanWebsite, getScanHistory, getScanReportById } from "../../services/api";
+import { useNavigate } from "react-router-dom";
+
+import { scanWebsite, getScanHistory } from "../../services/api";
 
 function ScanPreview(){
+  const navigate = useNavigate();
 
   const [url, setUrl] = useState("");
   const [scanResult, setScanResult] = useState(null);
@@ -10,8 +13,6 @@ function ScanPreview(){
   const [error, setError] = useState("");
   const [scanHistory, setScanHistory] = useState([]);
   const [activeIssueTab, setActiveIssueTab] = useState("");
-  const [loadingReportId, setLoadingReportId] = useState(null);
-  
 
   useEffect(() => {
 
@@ -231,28 +232,6 @@ function ScanPreview(){
     low: 0,
 
   };
-
-  async function handleViewReport(id){
-    try{
-      setError("");
-      setLoadingReportId(id);
-      setActiveIssueTab("");
-
-      const data = await getScanReportById(id);
-      setScanResult(data);
-
-      setTimeout(() => {
-        document.getElementById("accessibility-report")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 100);
-
-    } catch (error){
-      setError(error.message);
-
-    } finally {
-      setLoadingReportId(null);
-    }
-  }
 
   return(
 
@@ -560,11 +539,10 @@ function ScanPreview(){
                     
                     <button
                         type="button"
-                        onClick={() => handleViewReport(scan.id)}
-                        disabled={loadingReportId === scan.id}
+                        onClick={() => navigate(`/report/${scan.id}`)}
                         className="mt-4 cursor-pointer rounded-lg bg-blue-100 text-blue-700 px-4 py-2 text-sm font-semibold text-blue-700 transition-all duration-300 hover:bg-blue-200 disabled:cursor-not-allowed disabled:opacity-60"
                       >
-                        {loadingReportId === scan.id ? "Loading..." : "View Report"}
+                        View Report
                       </button>
 
                   </div>
