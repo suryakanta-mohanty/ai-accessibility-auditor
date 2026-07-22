@@ -17,7 +17,7 @@ public class CorsConfig {
                 registry.addMapping("/api/**")
                         .allowedOriginPatterns(
                                 "http://localhost:5173",
-                                "https://*.vercel.app"
+                                "https://ai-accessibility-auditor-one.vercel.app"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");

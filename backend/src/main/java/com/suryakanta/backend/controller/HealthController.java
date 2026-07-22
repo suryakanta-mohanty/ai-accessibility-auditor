@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthController {
 
     @GetMapping("/api/health")
-    public HealthResponse healthCheck(){
+    public HealthResponse healthCheck() {
         return new HealthResponse(
                 "UP",
                 "Backend running 🚀"
