@@ -10,6 +10,7 @@ function Report(){
   const [report, setReport] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeIssueTab, setActiveIssueTab] = useState("ALL");
 
   useEffect(() =>{
     async function fetchReport(){
@@ -71,13 +72,60 @@ function Report(){
     return "bg-blue-100 text-blue-700"
   }
 
+  function getIssueTypeLabel(type){
+    const issueTypeLabels = {
+      IMAGE: "Images",
+      BUTTON: "Buttons",
+      LINK: "Links",
+      PAGE: "Pages",
+      FORM: "Forms",
+      HEADING: "Headings",
+      IFRAME: "Iframes",
+    };
+
+    return issueTypeLabels[type] || type;
+  }
+
+  const groupedIssues = report?.issues?.reduce((groups, issue) =>{
+    if(!groups[issue.type]){
+      groups[issue.type] = [];
+    }
+
+    groups[issue.type].push(issue);
+    return groups;
+
+  }, {}) || {};
+
+  const issueTabs = Object.entries(groupedIssues)
+    .map(([type, issues]) => ({
+      type,
+      label: getIssueTypeLabel(type),
+      count: issues.length,
+
+    })).sort((a, b) => b.count - a.count);
+  
+  const visibleIssueTabs = report?.totalIssues > 0
+    ? [
+      {
+        type: "ALL",
+        label: "All",
+        count: report.totalIssues,
+      },
+      ...issueTabs,
+
+    ] : [];
+  
+  const visibleIssues = activeIssueTab === "ALL"  
+    ? report?.issues || []
+    : groupedIssues[activeIssueTab] || [];
+  
   return(
     <section className="min-h-screen bg-gray-50 px-6 py-28">
       <div className="mx-auto max-w-6xl">
         <button
           type="button"
           onClick={() => navigate("/")}
-          className="mb-8 flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700"
+          className="mb-8 flex items-center gap-2 cursor-pointer text-sm font-semibold text-blue-600 transition-all duration-300 rounded-lg hover:text-blue-700 hover:bg-blue-100 p-2"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Home
@@ -124,15 +172,34 @@ function Report(){
               Issues Found
             </h2>
 
+            {visibleIssueTabs.length > 0 && (
+              <div className="mt-5 flex flex-wrap gap-3">
+                {visibleIssueTabs.map((tab) => (
+                  <button
+                    key={tab.type}
+                    type="button"
+                    onClick={() => setActiveIssueTab(tab.type)}
+                    className={`rounded-lg cursor-pointer border px-4 py-2 text-sm font-semibold transition-all duration-300 ${
+                      activeIssueTab === tab.type
+                      ? "border-blue-600 bg-blue-600 text-white shadow-md"
+                      : "border-gray-200 bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {tab.label} {tab.count}
+                  </button>
+                ))}
+              </div>
+            )}
+
             <div className="mt-5 space-y-4">
-              {report.issues.map((issue, index) => (
+              {visibleIssues.map((issue, index) => (
                 <div
                   key={`${issue.type} - ${index}`}
                   className="rounded-2xl border border-gray-200 bg-gray-50 p-5"
                 >
                   <div className="flex flex-wrap gap-2">
                     <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-                      {issue.type}
+                      {getIssueTypeLabel(issue.type)}
                     </span>
 
                     <span
