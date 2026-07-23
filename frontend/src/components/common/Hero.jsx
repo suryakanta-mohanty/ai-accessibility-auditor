@@ -36,7 +36,13 @@ function Hero(){
         {/* Buttons */}
 
         <div className="mt-14 flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:justify-center">
-          <Button variant="primary" className="w-full justify-center sm:w-auto transition-all cursor-pointer duration-300 hover:scale-105">
+          <Button
+            onClick={() => 
+              document.getElementById("scan-preview")?.scrollIntoView({ behavior: "smooth" })
+            }
+            variant="primary"
+            className="w-full justify-center sm:w-auto transition-all cursor-pointer duration-300 hover:scale-105"
+          >
             Start Free Scanning
           </Button>
 
