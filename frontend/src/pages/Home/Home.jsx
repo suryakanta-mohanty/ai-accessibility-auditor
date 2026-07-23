@@ -16,15 +16,17 @@ import Footer from "../../components/sections/Footer";
 
 function Home(){
 
-  const [backendStatus, setBackendStatus] = useState("Check backend...");
+  const [backendStatus, setBackendStatus] = useState(
+    "Connecting to backend... Free server may take a few seconds to wake up."
+  );
 
   useEffect(() =>{
     getHealthStatus()
-      .then((data) =>{
-        setBackendStatus(`${data.status} - ${data.message}`);
+      .then(() =>{
+        setBackendStatus("Backend connected!");
       })
       .catch(() =>{
-        setBackendStatus("Backend not connected!");
+        setBackendStatus("Backend is waking up or temporarily unavailable. Please wait a few seconds and refresh.");
       });
   }, []);
 
@@ -32,7 +34,13 @@ function Home(){
     <>
       <Navbar />
 
-      <div className="bg-green-50 px-6 py-3 text-center text-sm font-medium text-green-700">
+      <div 
+        className={`px-6 py-3 text-center text-sm font-medium ${
+          backendStatus === "Backend connected!"
+          ? "bg-green-50 text-green-700"
+          : "bg-yellow-50 text-yellow-700"
+        }`}
+      >
         Backend Status: {backendStatus}
       </div>
 
